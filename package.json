@@ -9,7 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.9.4"
+    "@resvg/resvg-js": "^2.6.2",
+    "@supabase/supabase-js": "^2.50.0",
+    "astro": "^5.9.4",
+    "atropos": "^2.0.2",
+    "canvas": "^3.1.0",
+    "satori": "^0.15.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.10",
