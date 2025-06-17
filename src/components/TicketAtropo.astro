@@ -1,0 +1,33 @@
+---
+import Ticket from "./Ticket.astro";
+---
+
+<section class="atropos reactNuncaMas">
+  <div class="atropos-scale">
+    <div class="atropos-rotate">
+      <div class="atropos-inner">
+        <Ticket />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import Atropos from "atropos";
+
+  // Initialize
+  const reactNuncaMas = Atropos({
+    el: ".reactNuncaMas",
+    shadow: true,
+    highlight: true,
+    activeOffset: 40,
+    shadowScale: 0.8,
+  });
+</script>
+
+<style is:global>
+  .reactNuncaMas {
+    width: 1200px;
+    height: 630px;
+  }
+</style>
