@@ -1,0 +1,17 @@
+---
+type Props = {
+  variant: "primary" | "secondary";
+  href: string;
+  icon?: string;
+};
+
+const { variant, href } = Astro.props;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`px-5 py-2 rounded-md text-base font-medium ${variant === "primary" ? "bg-cs-primary" : "hover:underline underline-offset-2 underline-2"}`}
+  ><slot /></a
+>
