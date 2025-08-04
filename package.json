@@ -15,8 +15,9 @@
     "astro": "^5.9.4",
     "atropos": "^2.0.2",
     "canvas": "^3.1.0",
-    "modern-screenshot": "^4.6.4",
-    "satori": "^0.15.2"
+    "satori": "^0.15.2",
+    "satori-html": "^0.3.2",
+    "sharp": "^0.34.3"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.10",
