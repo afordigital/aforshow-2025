@@ -16,8 +16,7 @@ const siteUrl = Astro.site;
   const $ticket = document.getElementById("ticket-image") as HTMLImageElement;
   const { data: user } = await supabase.auth.getUser();
 
-  if (user && $ticket) {
-    console.log({ user });
+  if (user.user && $ticket) {
     const src = `${siteUrl}api/og/${user.user?.user_metadata.name.split("#")[0]}`;
     $ticket.src = src;
   }

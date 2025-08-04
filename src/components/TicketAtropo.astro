@@ -1,14 +1,28 @@
 ---
+import Link from "./common/Link.astro";
 import Ticket from "./Ticket.astro";
 ---
 
-<section class="atropos reactNuncaMas">
-  <div class="atropos-scale">
-    <div class="atropos-rotate">
-      <div class="atropos-inner">
-        <Ticket />
+<section class="flex flex-col gap-6">
+  <div class="flex items-baseline">
+    <img
+      src="/imgs/TicketTitle.webp"
+      alt="ticket"
+      class="w-[144px] h-[120px]"
+    />
+    <h1 class="text-subtitle font-bold">Descarga tu ticket ya</h1>
+  </div>
+  <div class="atropos reactNuncaMas">
+    <div class="atropos-scale">
+      <div class="atropos-rotate">
+        <div class="atropos-inner">
+          <Ticket />
+        </div>
       </div>
     </div>
+  </div>
+  <div class="w-full flex justify-center">
+    <Link href="" variant="primary">Descargar ticket</Link>
   </div>
 </section>
 
