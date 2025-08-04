@@ -1,4 +1,24 @@
-<div id="ticket" class="p-10 rounded-lg text-center text-white bg-blue-400">
-  <p>Ticket de la persona</p>
-  <p>¡Gracias por participar!</p>
+---
+const siteUrl = Astro.site;
+---
+
+<div>
+  <img id="ticket-image" />
+  <span class="sr-only" data-site-url={siteUrl}></span>
 </div>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  const $dataElement = document.querySelector("[data-site-url]") as HTMLElement;
+  const siteUrl = $dataElement.dataset.siteUrl;
+
+  const $ticket = document.getElementById("ticket-image") as HTMLImageElement;
+  const { data: user } = await supabase.auth.getUser();
+
+  if (user && $ticket) {
+    console.log({ user });
+    const src = `${siteUrl}api/og/${user.user?.user_metadata.name.split("#")[0]}`;
+    $ticket.src = src;
+  }
+</script>
