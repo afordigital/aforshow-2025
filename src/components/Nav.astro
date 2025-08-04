@@ -1,5 +1,5 @@
 <section class="flex max-w-7xl w-full m-auto justify-between items-center">
-  <h1>Aforshow 2025</h1>
+  <h1 class="font-handlee text-3xl">Aforshow</h1>
   <nav>
     <ul class="flex gap-4">
       <li><a href="/">Inicio</a></li>
@@ -45,6 +45,8 @@
     if (session?.user) {
       const user = session.user;
       const { name, avatar_url } = user.user_metadata;
+
+      console.log(user);
 
       const userDiv = document.getElementById("user-info");
       userDiv.innerHTML = `

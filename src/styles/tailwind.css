@@ -3,10 +3,11 @@
 @theme {
   --font-handlee: "Handlee", "sans-serif";
 
-  --text-hero-title: clamp(36px, 4vw, 48px);
-  --text-hero-subtitle: clamp(16px, 3vw, 24px);
+  --text-hero-title: clamp(36px, 4vw, 64px);
+  --text-hero-subtitle: clamp(16px, 3vw, 22px);
 
   --color-cs-primary: #f43e71;
+  --color-cs-primary-hover: #ff608d;
 }
 
 @keyframes fadeInUp {

@@ -12,6 +12,6 @@ const { variant, href } = Astro.props;
   href={href}
   target="_blank"
   rel="noopener noreferrer"
-  class={`px-5 py-2 rounded-md text-base font-medium ${variant === "primary" ? "bg-cs-primary" : "hover:underline underline-offset-2 underline-2"}`}
+  class={`px-5 py-2 rounded-md text-base font-medium ${variant === "primary" ? "bg-cs-primary hover:bg-cs-primary-hover" : "hover:underline underline-offset-2 underline-2"}`}
   ><slot /></a
 >
