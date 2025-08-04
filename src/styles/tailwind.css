@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --font-handlee: "Handlee", "sans-serif";
+
+  --text-hero-title: clamp(36px, 4vw, 48px);
+  --text-hero-subtitle: clamp(16px, 3vw, 24px);
+
+  --color-cs-primary: #f43e71;
+}
+
+@font-face {
+  font-family: "Handlee";
+  src: url("/fonts/Handlee-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}

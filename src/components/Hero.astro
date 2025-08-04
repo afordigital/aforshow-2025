@@ -3,6 +3,8 @@ import Link from "./common/Link.astro";
 ---
 
 <header class="flex flex-col gap-6 items-center">
+  <div id="user-info" class="flex items-center gap-2"></div>
+
   <hgroup class="flex flex-col items-center gap-4">
     <h1 class="text-hero-title text-center">Comparte, aprende, inspira</h1>
     <p class="text-center font-semibold text-hero-subtitle leading-[32px]">
@@ -10,6 +12,9 @@ import Link from "./common/Link.astro";
       programación web
     </p>
   </hgroup>
+
+  <button id="login-btn">Login con Discord</button>
+
   <footer class="flex gap-2 items-center">
     <Link href="/tickets" variant="primary">¡Inscríbete ahora!</Link>
     <Link
@@ -17,4 +22,56 @@ import Link from "./common/Link.astro";
       variant="secondary">Ver charlas pasadas</Link
     >
   </footer>
+
+  <div
+    id="supabase-config"
+    data-url={import.meta.env.PUBLIC_SUPABASE_URL}
+    data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+  >
+  </div>
 </header>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const config = document.getElementById("supabase-config");
+  const SUPABASE_URL = config.dataset.url;
+  const SUPABASE_ANON_KEY = config.dataset.key;
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function loginWithDiscord() {
+    await supabase.auth.signInWithOAuth({ provider: "discord" });
+  }
+
+  document
+    .getElementById("login-btn")
+    ?.addEventListener("click", loginWithDiscord);
+
+  async function checkSession() {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (session?.user) {
+      const user = session.user;
+      const { name, avatar_url } = user.user_metadata;
+
+      const userDiv = document.getElementById("user-info");
+      userDiv.innerHTML = `
+        <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />
+        <span class="font-semibold">${name}</span>
+      `;
+
+      document.getElementById("login-btn")?.remove();
+
+      await supabase.from("users").upsert({
+        id: user.id,
+        username: name,
+        avatar_url,
+      });
+    }
+  }
+
+  checkSession();
+</script>
