@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import satori from "satori";
 import { html } from "satori-html";
 
+import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { ReactNode } from "react";
@@ -11,8 +12,24 @@ const handleeRegular = await fs.readFile(
   path.resolve("./public/fonts/Handlee-Regular.ttf"),
 );
 
+const supabase = createClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+);
+
 export const GET: APIRoute = async ({ params, request }) => {
   const username = params.username;
+
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("id, name, username, avatar_url")
+    .eq("username", username)
+    .single();
+
+  if (error) {
+    throw new Error(`Usuario no encontrado: ${error.message}`);
+  }
+
   // Hacemos el SVG dinámico obteniendo texto de los parámetros de la URL
 
   const svgBorder = `
@@ -39,7 +56,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   // 1. Define tu HTML como un string. Puedes usar estilos en línea.
   const htmlTemplate = `
       <div
-        style="position: relative; display: flex; width: 666px; height: 332px; background-image: ${svgBackground};font-family: 'Handlee';"
+        style="position: relative; display: flex; width: 666px; height: 332px; background-image: ${svgBackground};font-family: 'Handlee';background-color: #fff; border-radius: 20px;"
       >
 
         <div
@@ -50,18 +67,19 @@ export const GET: APIRoute = async ({ params, request }) => {
           >
           <span
             style="width: 70px; height: 70px; border-radius: 100%; background-color: rgb(0, 0, 0);"
-          ></span>
+          >
+          <img src="${user.avatar_url}" alt="${user.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+          </span>
             <h4
               style="font-size: 2rem; margin: 0;"
             >
-              ${username}
+              ${user.name}
             </h4>
+            <p style="font-size: 1rem; margin: 4px 0 0;">Ticket #${user.id}</p>
           </div>
         </div>
       </div>
   `;
-
-  console.log("htmlTemplate", htmlTemplate);
 
   // 2. Convierte el string de HTML a la estructura que Satori necesita
   const markup = html(htmlTemplate);
@@ -90,6 +108,7 @@ export const GET: APIRoute = async ({ params, request }) => {
     status: 200,
     headers: {
       "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 };
