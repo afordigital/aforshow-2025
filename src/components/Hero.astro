@@ -3,8 +3,6 @@ import Link from "./common/Link.astro";
 ---
 
 <header class="flex flex-col gap-6 items-center">
-  <div id="user-info" class="flex items-center gap-2"></div>
-
   <hgroup class="flex flex-col items-center gap-4">
     <h1 class="text-hero-title text-center">Comparte, aprende, inspira</h1>
     <p class="text-center font-semibold text-hero-subtitle leading-[32px]">
@@ -20,4 +18,12 @@ import Link from "./common/Link.astro";
       variant="secondary">Ver charlas pasadas</Link
     >
   </footer>
+
+  <main class="relative w-full h-[350px] pointer-events-none">
+    <img
+      src="/imgs/Hero.webp"
+      alt="hero"
+      class="absolute w-auto h-[350px] z-0 right-0 bottom-0"
+    />
+  </main>
 </header>

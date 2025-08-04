@@ -1,12 +1,22 @@
-<section>
-  <nav></nav>
+<section class="flex max-w-7xl w-full m-auto justify-between items-center">
+  <h1>Aforshow 2025</h1>
+  <nav>
+    <ul class="flex gap-4">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/schedule">Horario</a></li>
+      <li><a href="/speakers">Charlas</a></li>
+      <li><a href="/ticket">Ticket</a></li>
+      <li><a href="/faq">FAQ</a></li>
+    </ul>
+  </nav>
   <button id="login-btn">Login con Discord</button>
-
-  <div
-    id="supabase-config"
-    data-url={import.meta.env.PUBLIC_SUPABASE_URL}
-    data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
-  >
+  <div id="user-info" class="flex items-center gap-2">
+    <div
+      id="supabase-config"
+      data-url={import.meta.env.PUBLIC_SUPABASE_URL}
+      data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+    >
+    </div>
   </div>
 </section>
 

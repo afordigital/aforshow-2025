@@ -9,6 +9,22 @@
   --color-cs-primary: #f43e71;
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s forwards;
+  opacity: 0;
+}
+
 @font-face {
   font-family: "Handlee";
   src: url("/fonts/Handlee-Regular.woff2") format("woff2");
