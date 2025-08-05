@@ -26,6 +26,7 @@ import Ticket from "./Ticket.astro";
     <a
       id="download-ticket"
       class="px-5 cursor-pointer py-2 rounded-md text-base font-medium bg-cs-primary hover:bg-cs-primary-hover"
+      download=""
       >Descargar ticket</a
     >
   </div>
@@ -42,22 +43,28 @@ import Ticket from "./Ticket.astro";
     activeOffset: 40,
     shadowScale: 0.8,
   });
+  
 </script>
 
-<script type="module">
+<script >
   import { supabase } from "../lib/supabase";
 
   window.addEventListener("DOMContentLoaded", async () => {
-    const siteUrl = document.querySelector("[data-site-url]")?.dataset.siteUrl;
+    const $span = document.querySelector("[data-site-url]") as HTMLSpanElement;
+    const siteUrl = $span?.dataset.siteUrl;
     const { data: user } = await supabase.auth.getUser();
 
     if (user?.user) {
       const name = user.user.user_metadata.name.split("#")[0];
       const ticketSrc = `${siteUrl}api/og/${name}`;
 
-      const link = document.getElementById("download-ticket");
-      link.href = ticketSrc;
-      link.download = `ticket-${name}.png`;
+      const $downloadButton = document.getElementById("download-ticket") as HTMLAnchorElement;
+      console.log({downloadButton: $downloadButton})
+      if ($downloadButton) {
+        const safeName = encodeURIComponent(name);
+        $downloadButton.href = ticketSrc;
+        $downloadButton.download = `ticket-${safeName}.png`;
+      }
     }
   });
 </script>
