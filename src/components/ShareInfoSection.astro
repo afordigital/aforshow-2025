@@ -5,7 +5,7 @@ import { infoCards } from "../lib/info";
 
 <section class="flex items-center flex-col gap-6 w-full">
   <h1 class="text-subtitle font-bold">Comparte conocimiento</h1>
-  <ul class="flex gap-2 w-full">
+  <ul class="flex flex-col sm:flex-row gap-2 w-full justify-center">
     {
       infoCards.map((infoCard) => {
         return <Info title={infoCard.title} img={infoCard.img} />;

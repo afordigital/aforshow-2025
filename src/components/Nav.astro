@@ -46,8 +46,6 @@
       const user = session.user;
       const { name, avatar_url } = user.user_metadata;
 
-      console.log(user);
-
       const userDiv = document.getElementById("user-info");
       userDiv.innerHTML = `
         <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />

@@ -1,5 +1,4 @@
 ---
-import Link from "./common/Link.astro";
 import Ticket from "./Ticket.astro";
 ---
 
@@ -8,11 +7,13 @@ import Ticket from "./Ticket.astro";
     <img
       src="/imgs/TicketTitle.webp"
       alt="ticket"
-      class="w-[144px] h-[120px]"
+      class="w-[144px] h-[120px] translate-y-10 z-10"
     />
-    <h1 class="text-subtitle font-bold">Descarga tu ticket ya</h1>
+    <h1 class="text-subtitle font-bold -translate-x-4">
+      Descarga tu ticket ya
+    </h1>
   </div>
-  <div class="atropos reactNuncaMas">
+  <div class="atropos atropoTicket">
     <div class="atropos-scale">
       <div class="atropos-rotate">
         <div class="atropos-inner">
@@ -22,16 +23,20 @@ import Ticket from "./Ticket.astro";
     </div>
   </div>
   <div class="w-full flex justify-center">
-    <Link href="" variant="primary">Descargar ticket</Link>
+    <a
+      id="download-ticket"
+      class="px-5 cursor-pointer py-2 rounded-md text-base font-medium bg-cs-primary hover:bg-cs-primary-hover"
+      >Descargar ticket</a
+    >
   </div>
+  <span class="sr-only" data-site-url={Astro.site}></span>
 </section>
 
 <script>
   import Atropos from "atropos";
 
-  // Initialize
-  const reactNuncaMas = Atropos({
-    el: ".reactNuncaMas",
+  const atropoTicket = Atropos({
+    el: ".atropoTicket",
     shadow: true,
     highlight: true,
     activeOffset: 40,
@@ -39,8 +44,26 @@ import Ticket from "./Ticket.astro";
   });
 </script>
 
+<script type="module">
+  import { supabase } from "../lib/supabase";
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const siteUrl = document.querySelector("[data-site-url]")?.dataset.siteUrl;
+    const { data: user } = await supabase.auth.getUser();
+
+    if (user?.user) {
+      const name = user.user.user_metadata.name.split("#")[0];
+      const ticketSrc = `${siteUrl}api/og/${name}`;
+
+      const link = document.getElementById("download-ticket");
+      link.href = ticketSrc;
+      link.download = `ticket-${name}.png`;
+    }
+  });
+</script>
+
 <style is:global>
-  .reactNuncaMas {
+  .atropoTicket {
     width: 666px;
     height: 332px;
   }
