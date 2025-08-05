@@ -1,0 +1,27 @@
+---
+import Link from "./common/Link.astro";
+---
+
+<section class="w-full flex flex-col gap-6 items-center">
+  <h1 class="text-subtitle font-black text-center leading-10">
+    Da tu primera<br /> charla de programación
+  </h1>
+  <p class="text-lg font-semibold">
+    Inspira a otros programadores dando tu primera charla técnica, sin importar
+    tu nivel
+  </p>
+  <div class="flex gap-2 items-center">
+    <Link href="/tickets" variant="primary">Inscribirme</Link>
+    <Link
+      href="https://youtu.be/LR3OpzyCQWM?si=_RulGhyygToeFNFs"
+      variant="secondary">Ver charlas pasadas</Link
+    >
+  </div>
+  <img
+    src="/imgs/CTA.webp"
+    aria-hidden="true"
+    width="440"
+    height="440"
+    alt="decorative woman presenting a graphic"
+  />
+</section>
