@@ -1,0 +1,470 @@
+---
+export interface Props {
+  subject?: string;
+  caption?: string;
+  hashtags?: string[];
+}
+
+const {
+  subject = "¡Mira mi ticket del evento!",
+  caption = "¡He conseguido mi ticket! ¿Vienes conmigo?",
+  hashtags = ["aforshow", "afordigital", "afordin", "evento", "ticket"],
+} = Astro.props;
+---
+
+<div>
+  <button id="open-share-modal">
+    <div class="flex items-center justify-center gap-2">
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+        ></path>
+      </svg>
+      <span>Compartir Ticket</span>
+    </div>
+  </button>
+
+  <div id="share-modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="text-xl font-bold text-gray-800">Compartir tu ticket</h3>
+        <button id="close-modal" class="close-btn">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-gray-600 mb-6 text-center">
+          Elige dónde quieres compartir tu ticket
+        </p>
+
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Twitter/X -->
+          <button
+            class="share-btn bg-black hover:bg-gray-800 text-white"
+            data-platform="twitter"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              ></path>
+            </svg>
+            <span>Twitter</span>
+          </button>
+
+          <!-- Facebook -->
+          <button
+            class="share-btn bg-blue-600 hover:bg-blue-700 text-white"
+            data-platform="facebook"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+              ></path>
+            </svg>
+            <span>Facebook</span>
+          </button>
+
+          <!-- Instagram -->
+          <button
+            class="share-btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+            data-platform="instagram"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+              ></path>
+            </svg>
+            <span>Instagram</span>
+          </button>
+
+          <!-- WhatsApp -->
+          <button
+            class="share-btn bg-green-500 hover:bg-green-600 text-white"
+            data-platform="whatsapp"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"
+              ></path>
+            </svg>
+            <span>WhatsApp</span>
+          </button>
+
+          <!-- LinkedIn -->
+          <button
+            class="share-btn bg-blue-700 hover:bg-blue-800 text-white"
+            data-platform="linkedin"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+              ></path>
+            </svg>
+            <span>LinkedIn</span>
+          </button>
+
+          <button
+            class="share-btn bg-gray-600 hover:bg-gray-700 text-white"
+            data-platform="copy"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              ></path>
+            </svg>
+            <span>Copiar</span>
+          </button>
+        </div>
+
+        <div class="border-t border-gray-200 my-6"></div>
+
+        <div class="bg-gray-50 rounded-lg p-4">
+          <p class="text-sm text-gray-600 mb-2">Vista previa:</p>
+          <p class="text-sm font-medium text-gray-800">{caption}</p>
+          <div class="flex flex-wrap gap-1 mt-2">
+            {
+              hashtags.map((tag) => (
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  #{tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">
+    <span id="toast-message">¡Enlace copiado!</span>
+  </div>
+
+  <span
+    class="sr-only"
+    data-site-url={Astro.site}
+    data-subject={subject}
+    data-caption={caption}
+    data-hashtags={hashtags.join(",")}></span>
+</div>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const $dataElement = document.querySelector(
+      "[data-site-url]",
+    ) as HTMLElement;
+    const siteUrl = $dataElement?.dataset.siteUrl;
+    const subject =
+      $dataElement?.dataset.subject || "¡Mira mi ticket del evento!";
+    const caption =
+      $dataElement?.dataset.caption ||
+      "¡He conseguido mi ticket! ¿Vienes conmigo?";
+    const hashtags = $dataElement?.dataset.hashtags?.split(",") || [
+      "evento",
+      "ticket",
+    ];
+
+    const { data: user } = await supabase.auth.getUser();
+
+    if (!user?.user) return;
+
+    const userName = user.user.user_metadata.name.split("#")[0];
+    const shareUrl = `${siteUrl}ticket/${userName}`;
+
+    const $openModal = document.getElementById("open-share-modal");
+    const $closeModal = document.getElementById("close-modal");
+    const $modalOverlay = document.getElementById("share-modal-overlay");
+    const $toast = document.getElementById("toast");
+    const $toastMessage = document.getElementById("toast-message");
+
+    type ShareConfig = {
+      popup?: boolean;
+      url?: string;
+      action?: string;
+      message?: string;
+    };
+
+    const shareConfigs: Record<string, ShareConfig> = {
+      twitter: {
+        url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(caption)}&url=${encodeURIComponent(shareUrl)}&hashtags=${hashtags.join(",")}`,
+        popup: true,
+      },
+      facebook: {
+        url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(caption)}`,
+        popup: true,
+      },
+      whatsapp: {
+        url: `https://wa.me/?text=${encodeURIComponent(`${caption} ${shareUrl}`)}`,
+        popup: false,
+      },
+      linkedin: {
+        url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(subject)}&summary=${encodeURIComponent(caption)}`,
+        popup: true,
+      },
+      instagram: {
+        action: "copy",
+        message: "Enlace copiado. Pégalo en tu historia de Instagram.",
+      },
+      copy: {
+        action: "copy",
+        message: "¡Enlace copiado al portapapeles!",
+      },
+    };
+
+    function showToast(message: string) {
+      if ($toast && $toastMessage) {
+        $toastMessage.textContent = message;
+        $toast.classList.add("show");
+
+        setTimeout(() => {
+          $toast.classList.remove("show");
+        }, 3000);
+      }
+    }
+
+    function openModal() {
+      $modalOverlay?.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      $modalOverlay?.classList.remove("show");
+      document.body.style.overflow = "auto";
+    }
+
+    async function copyToClipboard(text: string) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+          return true;
+        } catch {
+          document.body.removeChild(textArea);
+          return false;
+        }
+      }
+    }
+
+    $openModal?.addEventListener("click", openModal);
+    $closeModal?.addEventListener("click", closeModal);
+
+    $modalOverlay?.addEventListener("click", (e) => {
+      if (e.target === $modalOverlay) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && $modalOverlay?.classList.contains("show")) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("click", async (e) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest(".share-btn") as HTMLButtonElement;
+
+      if (!button) return;
+
+      const platform = button.dataset.platform as keyof typeof shareConfigs;
+      const config = shareConfigs[platform];
+
+      if (!config) return;
+
+      e.preventDefault();
+
+      if (config.action === "copy") {
+        const textToCopy =
+          platform === "instagram" ? `${caption} ${shareUrl}` : shareUrl;
+
+        const success = await copyToClipboard(textToCopy);
+        if (success) {
+          showToast(config.message || "¡Enlace copiado!");
+          closeModal();
+        } else {
+          showToast("Error al copiar el enlace");
+        }
+      } else if (config.url) {
+        if (config.popup) {
+          const popup = window.open(
+            config.url,
+            "share",
+            "width=600,height=400,scrollbars=yes,resizable=yes",
+          );
+
+          if (popup) {
+            popup.focus();
+          }
+        } else {
+          window.open(config.url, "_blank");
+        }
+        closeModal();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 300ms;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-content {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 28rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.95);
+    transition: transform 300ms;
+  }
+
+  .modal-overlay.show .modal-content {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .close-btn {
+    color: #9ca3af;
+    transition: color 200ms;
+  }
+
+  .close-btn:hover {
+    color: #4b5563;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 200ms;
+    transform: scale(1);
+    width: 100%;
+    justify-content: center;
+    outline: none;
+  }
+
+  .share-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .share-btn:focus {
+    outline: none;
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .share-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Toast styles */
+  .toast {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #10b981;
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 300ms;
+    z-index: 60;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .modal-content {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .modal-body .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
