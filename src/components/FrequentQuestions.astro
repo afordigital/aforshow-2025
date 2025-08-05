@@ -1,0 +1,21 @@
+---
+import { questions } from "../lib/questions";
+---
+
+<section class="w-full flex flex-col gap-6 items-center">
+  <h1 class="text-subtitle font-bold">Preguntas frecuentes</h1>
+  <ul
+    class="w-full flex flex-col justify-center divide-[#E5E5E5] divide-y-1 border-[#E5E5E5] border-y-1"
+  >
+    {
+      questions.map((question) => {
+        return (
+          <li class="w-full flex justify-between py-4 pr-2 items-center">
+            <p class="font-semibold">{question.question}</p>
+            <p>+</p>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
