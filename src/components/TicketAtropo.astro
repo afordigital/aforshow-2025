@@ -2,7 +2,7 @@
 import Ticket from "./Ticket.astro";
 ---
 
-<section class="flex flex-col gap-6">
+<section id="ticket" class="flex flex-col gap-6">
   <div class="flex items-baseline">
     <img
       src="/imgs/TicketTitle.webp"
@@ -26,8 +26,7 @@ import Ticket from "./Ticket.astro";
     <a
       id="download-ticket"
       class="px-5 cursor-pointer py-2 rounded-md text-base font-medium bg-cs-primary hover:bg-cs-primary-hover"
-      download=""
-      >Descargar ticket</a
+      download="">Descargar ticket</a
     >
   </div>
   <span class="sr-only" data-site-url={Astro.site}></span>
@@ -43,10 +42,9 @@ import Ticket from "./Ticket.astro";
     activeOffset: 40,
     shadowScale: 0.8,
   });
-  
 </script>
 
-<script >
+<script>
   import { supabase } from "../lib/supabase";
 
   window.addEventListener("DOMContentLoaded", async () => {
@@ -58,8 +56,10 @@ import Ticket from "./Ticket.astro";
       const name = user.user.user_metadata.name.split("#")[0];
       const ticketSrc = `${siteUrl}api/og/${name}`;
 
-      const $downloadButton = document.getElementById("download-ticket") as HTMLAnchorElement;
-      console.log({downloadButton: $downloadButton})
+      const $downloadButton = document.getElementById(
+        "download-ticket"
+      ) as HTMLAnchorElement;
+      console.log({ downloadButton: $downloadButton });
       if ($downloadButton) {
         const safeName = encodeURIComponent(name);
         $downloadButton.href = ticketSrc;
