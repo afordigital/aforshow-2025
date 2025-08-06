@@ -1,3 +1,7 @@
+---
+import DiscordIcon from "./svgs/discord.svg";
+---
+
 <section class="flex max-w-7xl w-full m-auto justify-between items-center">
   <a href="/" class="font-handlee text-3xl">Aforshow</a>
   <nav>
@@ -9,14 +13,21 @@
       <li><a href="#faq" class="font-medium">FAQ</a></li>
     </ul>
   </nav>
-  <button id="login-btn">Login con Discord</button>
-  <div id="user-info" class="flex items-center gap-2">
-    <div
-      id="supabase-config"
-      data-url={import.meta.env.PUBLIC_SUPABASE_URL}
-      data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
-    >
-    </div>
+
+  <button
+    id="login-btn"
+    class="flex items-center bg-white border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
+  >
+    <DiscordIcon class="h-6 w-6 mr-2" />
+    <span>Login con Discord</span>
+  </button>
+  <div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
+  <div
+    id="supabase-config"
+    data-url={import.meta.env.PUBLIC_SUPABASE_URL}
+    data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+    class="sr-only"
+  >
   </div>
 </section>
 
@@ -29,13 +40,19 @@
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  const $loginBtn = document.getElementById("login-btn");
+  const $userDiv = document.getElementById("user-info");
+
   async function loginWithDiscord() {
     await supabase.auth.signInWithOAuth({ provider: "discord" });
   }
 
-  document
-    .getElementById("login-btn")
-    ?.addEventListener("click", loginWithDiscord);
+  async function logout() {
+    await supabase.auth.signOut();
+    window.location.reload();
+  }
+
+  $loginBtn?.addEventListener("click", loginWithDiscord);
 
   async function checkSession() {
     const {
@@ -44,15 +61,31 @@
 
     if (session?.user) {
       const user = session.user;
-      const { name, avatar_url } = user.user_metadata;
+      const { name, avatar_url, custom_claims } = user.user_metadata;
 
-      const userDiv = document.getElementById("user-info");
-      userDiv.innerHTML = `
+      const displayName = custom_claims.global_name;
+      const username = name.split("#")[0];
+
+      $userDiv.classList.remove("hidden");
+      $userDiv.classList.add("flex");
+      $userDiv.innerHTML = `
         <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />
-        <span class="font-semibold">${name}</span>
+        <div class="flex flex-col">
+          <span class="font-semibold">${displayName}</span>
+          <span class="text-xs text-gray-500">${username}</span>
+          <button
+            id="logout-btn"
+            class="text-cs-primary hover:underline cursor-pointer text-sm flex"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       `;
 
-      document.getElementById("login-btn")?.remove();
+      $loginBtn?.remove();
+
+      const $logoutBtn = document.getElementById("logout-btn");
+      $logoutBtn?.addEventListener("click", logout);
 
       await supabase.from("users").upsert({
         id: user.id,
