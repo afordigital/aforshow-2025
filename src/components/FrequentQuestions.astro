@@ -10,12 +10,66 @@ import { questions } from "../lib/questions";
     {
       questions.map((question) => {
         return (
-          <li class="w-full flex justify-between py-4 pr-2 items-center">
-            <p class="font-semibold">{question.question}</p>
-            <p>+</p>
+          <li class="w-full">
+            <button
+              class="w-full flex justify-between py-4 pr-2 items-center text-left hover:bg-gray-50 transition-colors duration-300"
+              aria-expanded="false"
+              aria-controls={`answer-${question.id}`}
+              data-question-id={question.id}
+            >
+              <span class="font-semibold">{question.question}</span>
+              <span class="text-xl font-bold transition-transform duration-400 faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div
+              id={`answer-${question.id}`}
+              class="faq-answer hidden px-4 pb-4"
+              role="region"
+              aria-labelledby={`question-${question.id}`}
+              tabindex="-1"
+            >
+              <p class="text-gray-700">{question.answer}</p>
+            </div>
           </li>
         );
       })
     }
   </ul>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqButtons = document.querySelectorAll<HTMLButtonElement>('[data-question-id]');
+    
+    faqButtons.forEach(button => {
+      button.addEventListener('click', function(this: HTMLButtonElement) {
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        const answerId = this.getAttribute('aria-controls');
+        const answer = answerId ? document.getElementById(answerId) : null;
+        const icon = this.querySelector<HTMLSpanElement>('.faq-icon');
+        
+        if (!answer || !icon) return;
+        
+        if (isExpanded) {
+          this.setAttribute('aria-expanded', 'false');
+          answer.classList.add('hidden');
+          answer.removeAttribute('tabindex');
+          icon.textContent = '+';
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+          answer.classList.remove('hidden');
+          answer.setAttribute('tabindex', '0');
+          icon.textContent = '−';
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+      
+      button.addEventListener('keydown', function(this: HTMLButtonElement, event: KeyboardEvent) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          this.click();
+        }
+      });
+    });
+  });
+</script>
