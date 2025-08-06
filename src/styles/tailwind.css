@@ -31,8 +31,12 @@ select {
 }
 
 .fade-in-up {
-  animation: fadeInUp 0.5s forwards;
+  --stagger: 0;
+  --delay: 120ms;
+
   opacity: 0;
+  animation: fadeInUp 0.6s both;
+  animation-delay: calc(var(--stagger) * var(--delay));
 }
 
 @keyframes fadeInUp {
@@ -40,6 +44,7 @@ select {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
