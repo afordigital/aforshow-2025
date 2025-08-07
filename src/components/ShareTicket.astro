@@ -13,10 +13,13 @@ const {
 ---
 
 <div>
-  <button id="open-share-modal">
+  <button
+    id="open-share-modal"
+    class="relative after:absolute after:-bottom-2 after:left-1/2 after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:left-0 hover:after:w-full"
+  >
     <div class="flex items-center justify-center gap-2">
       <svg
-        class="w-5 h-5"
+        class="w-4 h-4"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -180,7 +183,7 @@ const {
 
   document.addEventListener("DOMContentLoaded", async () => {
     const $dataElement = document.querySelector(
-      "[data-site-url]",
+      "[data-site-url]"
     ) as HTMLElement;
     const siteUrl = $dataElement?.dataset.siteUrl;
     const subject =
@@ -328,7 +331,7 @@ const {
           const popup = window.open(
             config.url,
             "share",
-            "width=600,height=400,scrollbars=yes,resizable=yes",
+            "width=600,height=400,scrollbars=yes,resizable=yes"
           );
 
           if (popup) {

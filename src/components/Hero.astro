@@ -1,40 +1,41 @@
 ---
-import HeroSvg from '../../public/imgs/Hero.svg';
-import Link from './common/Link.astro';
+import HeroSvg from "../../public/imgs/Hero.svg";
+import Link from "./common/Link.astro";
 ---
 
-<header class='flex flex-col gap-6 items-center'>
-	<hgroup class='flex flex-col items-center gap-4'>
-		<h1 class='text-hero-title text-center font-handlee'>
-			<div class='inline-block text-balance'>
-				<span class='fade-in-up inline-block' style='--stagger:0'>
-					Comparte,
-				</span>
-				<span class='fade-in-up inline-block' style='--stagger:1'>
-					aprende,
-				</span>
-				<span class='fade-in-up inline-block' style='--stagger:2'>
-					inspira
-				</span>
-			</div>
-		</h1>
-		<p
-			style='--stagger:3'
-			class='text-center font-semibold text-hero-subtitle leading-[32px] fade-in-up'>
-			Transforma ideas en conocimiento <br /> en el mayor evento de charlas sobre
-			programación web
-		</p>
-	</hgroup>
+<header class="flex flex-col gap-6 items-center">
+  <hgroup class="flex flex-col items-center gap-4">
+    <h1 class="text-hero-title text-center font-handlee">
+      <div class="inline-block text-balance">
+        <span class="fade-in-up inline-block" style="--stagger:0">
+          Comparte,
+        </span>
+        <span class="fade-in-up inline-block" style="--stagger:1">
+          aprende,
+        </span>
+        <span class="fade-in-up inline-block" style="--stagger:2">
+          inspira
+        </span>
+      </div>
+    </h1>
+    <p
+      style="--stagger:3"
+      class="text-center font-semibold text-hero-subtitle leading-[32px] fade-in-up"
+    >
+      Transforma ideas en conocimiento <br /> en el mayor evento de charlas sobre
+      programación web
+    </p>
+  </hgroup>
 
-	<footer style='--stagger:4' class='flex gap-2 items-center fade-in-up'>
-		<Link href='/tickets' variant='primary'>¡Votar charlas!</Link>
-		<Link
-			href='https://youtu.be/LR3OpzyCQWM?si=_RulGhyygToeFNFs'
-			variant='secondary'>Ver charlas pasadas</Link
-		>
-	</footer>
+  <footer style="--stagger:4" class="flex gap-4 items-center fade-in-up">
+    <Link href="/tickets" variant="primary">¡Votar charlas!</Link>
+    <Link
+      href="https://youtu.be/LR3OpzyCQWM?si=_RulGhyygToeFNFs"
+      variant="secondary">Ver charlas pasadas</Link
+    >
+  </footer>
 
-	<main class='relative w-full h-[350px] pointer-events-none'>
-		<HeroSvg class='absolute w-auto h-[350px] z-0 right-0 bottom-0' />
-	</main>
+  <main class="relative w-full h-[350px] pointer-events-none">
+    <HeroSvg class="absolute w-auto h-[350px] z-0 right-0 bottom-0" />
+  </main>
 </header>
