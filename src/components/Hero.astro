@@ -1,4 +1,5 @@
 ---
+import HeroSvg from '../../public/imgs/Hero.svg';
 import Link from './common/Link.astro';
 ---
 
@@ -25,7 +26,7 @@ import Link from './common/Link.astro';
 		</p>
 	</hgroup>
 
-	<footer style="--stagger:4" class='flex gap-2 items-center fade-in-up'>
+	<footer style='--stagger:4' class='flex gap-2 items-center fade-in-up'>
 		<Link href='/tickets' variant='primary'>¡Votar charlas!</Link>
 		<Link
 			href='https://youtu.be/LR3OpzyCQWM?si=_RulGhyygToeFNFs'
@@ -34,10 +35,6 @@ import Link from './common/Link.astro';
 	</footer>
 
 	<main class='relative w-full h-[350px] pointer-events-none'>
-		<img
-			src='/imgs/Hero.webp'
-			alt='hero'
-			class='absolute w-auto h-[350px] z-0 right-0 bottom-0'
-		/>
+		<HeroSvg class='absolute w-auto h-[350px] z-0 right-0 bottom-0' />
 	</main>
 </header>
