@@ -37,67 +37,65 @@ import ShareTicket from "./ShareTicket.astro";
     </div>
     <span class="sr-only" data-site-url={Astro.site}></span>
   </div>
-
-  <script>
-    import Atropos from "atropos";
-
-    const atropoTicket = Atropos({
-      el: ".atropoTicket",
-      shadow: true,
-      highlight: true,
-      activeOffset: 40,
-      shadowScale: 0.8,
-    });
-  </script>
-
-  <script>
-    import { supabase } from "../lib/supabase";
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const $span = document.querySelector(
-        "[data-site-url]"
-      ) as HTMLSpanElement;
-      const siteUrl = $span?.dataset.siteUrl;
-      const { data: user } = await supabase.auth.getUser();
-
-      const $blurredTicket = document.querySelector(
-        ".blurred-ticket"
-      ) as HTMLElement;
-      const $ticketContainer = document.querySelector(
-        ".ticket-container"
-      ) as HTMLElement;
-
-      if (user?.user) {
-        console.log("entré en el if");
-
-        $blurredTicket.style.display = "none";
-        $ticketContainer.style.display = "flex";
-        const name = user.user.user_metadata.name.split("#")[0];
-        const ticketSrc = `${siteUrl}api/og/${name}`;
-
-        const $downloadButton = document.getElementById(
-          "download-ticket"
-        ) as HTMLAnchorElement;
-
-        if ($downloadButton) {
-          const safeName = encodeURIComponent(name);
-          $downloadButton.href = ticketSrc;
-          $downloadButton.download = `ticket-${safeName}.png`;
-        }
-      } else {
-        console.log("No user");
-        console.log("antes", $ticketContainer);
-        $blurredTicket.style.display = "flex";
-        $ticketContainer.style.display = "none";
-        console.log("despues", $ticketContainer);
-      }
-    });
-  </script>
-
-  <style is:global>
-    .atropoTicket {
-      width: 666px;
-      height: 332px;
-    }
-  </style>
 </section>
+
+<script>
+  import Atropos from "atropos";
+
+  const atropoTicket = Atropos({
+    el: ".atropoTicket",
+    shadow: true,
+    highlight: true,
+    activeOffset: 40,
+    shadowScale: 0.8,
+  });
+</script>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const $span = document.querySelector("[data-site-url]") as HTMLSpanElement;
+    const siteUrl = $span?.dataset.siteUrl;
+    const { data: user } = await supabase.auth.getUser();
+
+    const $blurredTicket = document.querySelector(
+      ".blurred-ticket"
+    ) as HTMLElement;
+    const $ticketContainer = document.querySelector(
+      ".ticket-container"
+    ) as HTMLElement;
+
+    if (user?.user) {
+      console.log("entré en el if");
+
+      $blurredTicket.style.display = "none";
+      $ticketContainer.style.display = "flex";
+      const name = user.user.user_metadata.name.split("#")[0];
+      const ticketSrc = `${siteUrl}api/og/${name}`;
+
+      const $downloadButton = document.getElementById(
+        "download-ticket"
+      ) as HTMLAnchorElement;
+
+      if ($downloadButton) {
+        const safeName = encodeURIComponent(name);
+        $downloadButton.href = ticketSrc;
+        $downloadButton.download = `ticket-${safeName}.png`;
+      }
+    } else {
+      console.log("No user");
+      console.log("antes", $ticketContainer);
+      $blurredTicket.style.display = "flex";
+      $ticketContainer.style.display = "none";
+      console.log("despues", $ticketContainer);
+    }
+  });
+</script>
+
+<style is:global>
+  .atropoTicket {
+    width: 666px;
+    height: 332px;
+  }
+</style>
