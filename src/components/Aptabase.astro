@@ -69,17 +69,18 @@ const devMode = import.meta.env.DEV;
 
   async function onRouteChange() {
     const { data } = await supabase.auth.getUser();
-    const user = data?.user;
 
+    const user = data?.user;
+    const userPublicPayload = user
+      ? {
+          userId: user.id || "anonymous",
+          userEmail: user.email || "anonymous",
+          userName: user.user_metadata?.name.split("#")[0] || "anonymous",
+        }
+      : null;
     sendEvent("page_changed", {
       path: window.location.pathname + window.location.search,
-      user: user
-        ? {
-            id: user.id || "anonymous",
-            email: user.email || "anonymous",
-            name: user.user_metadata?.name || "anonymous",
-          }
-        : null,
+      ...userPublicPayload,
     });
   }
 
