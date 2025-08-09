@@ -1,35 +1,22 @@
 ---
-import DiscordIcon from "./svgs/discord.svg";
+import DiscordIcon from "@assets/icons/discord.svg";
 ---
 
-<section class="flex max-w-7xl w-full m-auto justify-between items-center">
-  <a href="/" class="font-handlee text-3xl">Aforshow</a>
-  <nav>
-    <ul class="flex gap-4">
-      <li><a href="/" class="font-medium">Inicio</a></li>
-      <li><a href="#info" class="font-medium">Info</a></li>
-      <li><a href="#speakers" class="font-medium">Charlas</a></li>
-      <li><a href="#ticket" class="font-medium">Ticket</a></li>
-      <li><a href="#faq" class="font-medium">FAQ</a></li>
-    </ul>
-  </nav>
-
-  <button
-    id="login-btn"
-    class="flex items-center bg-white border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
-  >
-    <DiscordIcon class="h-6 w-6 mr-2" />
-    <span>Login con Discord</span>
-  </button>
-  <div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
-  <div
-    id="supabase-config"
-    data-url={import.meta.env.PUBLIC_SUPABASE_URL}
-    data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
-    class="sr-only"
-  >
-  </div>
-</section>
+<button
+  id="login-btn"
+  class="hidden xl:flex items-center bg-white border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
+>
+  <DiscordIcon class="h-6 w-6 mr-2" />
+  <span>Login con Discord</span>
+</button>
+<div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
+<div
+  id="supabase-config"
+  data-url={import.meta.env.PUBLIC_SUPABASE_URL}
+  data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+  class="sr-only"
+>
+</div>
 
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";

@@ -1,0 +1,40 @@
+---
+const links = [
+  {
+    href: "/",
+    label: "Inicio",
+  },
+  {
+    href: "#info",
+    label: "Info",
+  },
+  {
+    href: "#speakers",
+    label: "Charlas",
+  },
+  {
+    href: "#ticket",
+    label: "Ticket",
+  },
+  {
+    href: "#faq",
+    label: "FAQ",
+  }
+];
+
+interface Props {
+  class?: string;
+}
+
+const { class: classname, ...props } = Astro.props as Props;
+---
+
+<nav class={classname} {...props}>
+  <ul class="flex gap-4">
+    {
+      links.map(({ href, label }) => (
+        <li><a href={href} class="font-medium">{label}</a></li>
+      ))
+    }
+  </ul>
+</nav>
