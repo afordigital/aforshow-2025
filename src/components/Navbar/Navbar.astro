@@ -33,8 +33,8 @@ import Login from "./Login.astro";
 
 <script>
   const body = document.body;
-  const menuButton = document.querySelector(".menu") as HTMLButtonElement;
   const dialog = document.querySelector(".menu-dialog") as HTMLDialogElement;
+  const menuButton = document.querySelector(".menu") as HTMLButtonElement;
   const closeButton = dialog?.querySelector(".close") as HTMLButtonElement;
 
   menuButton?.addEventListener("click", () => {
@@ -46,6 +46,15 @@ import Login from "./Login.astro";
     dialog?.close();
     body.classList.remove("overflow-hidden");
   });
+
+  dialog?.addEventListener("click", (e: Event) => {
+    const target = e.target as HTMLElement;
+
+    if (target.nodeName === "A" || target.nodeName === "BUTTON") {
+      dialog?.close();
+      body.classList.remove("overflow-hidden");
+    }
+  })
 </script>
 
 <style>

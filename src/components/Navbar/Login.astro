@@ -14,8 +14,8 @@ const { class: classname } = Astro.props as Props;
     ["bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer", classname]
   }
 >
-  <Discord width={24} height={24} />
-  <span>Iniciar sesión</span>
+  <Discord class="pointer-events-none" width={24} height={24} />
+  <span class="pointer-events-none">Iniciar sesión</span>
 </button>
 <div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
 <div
