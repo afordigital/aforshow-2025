@@ -24,13 +24,14 @@ const links = [
 
 interface Props {
   class?: string;
+  childClass?: string;
 }
 
-const { class: classname, ...props } = Astro.props as Props;
+const { class: classname, childClass, ...props } = Astro.props as Props;
 ---
 
 <nav class={classname} {...props}>
-  <ul class="flex gap-4">
+  <ul class={childClass}>
     {
       links.map(({ href, label }) => (
         <li><a href={href} class="font-medium">{label}</a></li>
