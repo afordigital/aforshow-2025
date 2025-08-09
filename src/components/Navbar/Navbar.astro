@@ -1,4 +1,7 @@
 ---
+import Menu from "@assets/icons/menu.svg";
+import Close from "@assets/icons/close.svg";
+
 import Links from "./Links.astro";
 import Login from "./Login.astro";
 ---
@@ -7,8 +10,66 @@ import Login from "./Login.astro";
   <div class="container mx-auto px-4 flex justify-between items-center">
     <a href="/" class="font-handlee text-3xl">Aforshow</a>
 
-    <Links class="hidden xl:block" />
+    <Links class="hidden xl:block" childClass="xl:flex xl:items-center xl:gap-12" />
 
-    <Login />
+    <Login class="hidden xl:flex xl:items-center xl:gap-2" />
+
+    <button class="menu p-0.5 rounded-md active:bg-gray-200 active:outline-none active:ring-2 active:ring-gray-500 transition-colors xl:hidden" type="button">
+      <Menu width={28} height={28} />
+    </button>
   </div>
 </section>
+
+<dialog class="menu-dialog w-full max-w-[75%] rounded-md shadow-md border bg-stone-50 backdrop:bg-black/50 backdrop:backdrop-blur-sm m-auto">
+  <div class="flex flex-col gap-4 pt-7 pb-6 px-4 relative">
+    <button class="close absolute top-0 right-0 translate-y-2 -translate-x-3 active:text-red-500 transition-colors" type="button">
+      <Close width={26} height={26} />
+    </button>
+
+    <Links childClass="flex flex-col gap-4 text-center" />
+    <Login class="flex justify-center items-center gap-2" />
+  </div>
+</dialog>
+
+<script>
+  const body = document.body;
+  const menuButton = document.querySelector(".menu") as HTMLButtonElement;
+  const dialog = document.querySelector(".menu-dialog") as HTMLDialogElement;
+  const closeButton = dialog?.querySelector(".close") as HTMLButtonElement;
+
+  menuButton?.addEventListener("click", () => {
+    dialog?.showModal();
+    body.classList.add("overflow-hidden");
+  });
+
+  closeButton.addEventListener("click", () => {
+    dialog?.close();
+    body.classList.remove("overflow-hidden");
+  });
+</script>
+
+<style>
+  .menu-dialog {
+    transition:
+      opacity 300ms ease,
+      translate 300ms ease,
+      overlay 500ms ease allow-discrete,
+      display 300ms ease allow-discrete;
+    opacity: 0;
+    translate: 0px 16px;
+
+    &[open] {
+      opacity: 1;
+      translate: 0px 0px;
+    }
+  }
+
+  @starting-style {
+    .menu-dialog {
+      &[open] {
+        opacity: 0;
+        translate: 0px -16px;
+      }
+    }
+  }
+</style>
