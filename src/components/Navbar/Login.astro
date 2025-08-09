@@ -1,13 +1,21 @@
 ---
-import DiscordIcon from "@assets/icons/discord.svg";
+import Discord from "@assets/icons/discord.svg";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classname } = Astro.props as Props;
 ---
 
 <button
   id="login-btn"
-  class="hidden xl:flex items-center bg-white border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
+  class:list={
+    ["bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer", classname]
+  }
 >
-  <DiscordIcon class="h-6 w-6 mr-2" />
-  <span>Login con Discord</span>
+  <Discord width={24} height={24} />
+  <span>Iniciar sesión</span>
 </button>
 <div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
 <div
