@@ -4,28 +4,28 @@ import Link from "./common/Link.astro";
 ---
 
 <header class="flex flex-col gap-6 items-center">
-  <hgroup class="flex flex-col items-center gap-4">
-    <h1 class="text-hero-title text-center font-handlee">
-      <div class="inline-block text-balance">
-        <span class="fade-in-up inline-block" style="--stagger:0">
-          Comparte,
-        </span>
+  <div class="flex flex-col gap-3 items-center">
+    <hgroup class="flex flex-col items-center px-4">
+      <h1 class="fade-in-up text-hero-title text-center font-semibold font-handlee leading-12" style="--stagger:0">
+        AforShow 2025
+      </h1>
+      <p class="text-hero-inner-title text-center font-semibold font-handlee">
         <span class="fade-in-up inline-block" style="--stagger:1">
-          aprende,
+          ¡Comparte,
         </span>
         <span class="fade-in-up inline-block" style="--stagger:2">
-          inspira
+          aprende,
         </span>
-      </div>
-    </h1>
-    <p
-      style="--stagger:3"
-      class="text-center font-semibold text-hero-subtitle leading-[32px] fade-in-up"
-    >
-      Transforma ideas en conocimiento <br /> en el mayor evento de charlas sobre
-      programación web
+        <span class="fade-in-up inline-block" style="--stagger:3">
+          inspira!
+        </span>
+      </p>
+    </hgroup>
+    <p class="fade-in-up text-hero-subtitle max-w-[553px] mx-auto text-center" style="--stagger:4">
+      Transforma ideas en conocimiento en el mayor evento de charlas sobre
+      programación web.
     </p>
-  </hgroup>
+  </div>
 
   <footer style="--stagger:4" class="flex gap-4 items-center fade-in-up">
     <Link href="/tickets" variant="primary">¡Votar charlas!</Link>
