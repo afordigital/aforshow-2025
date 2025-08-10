@@ -4,6 +4,7 @@
   --font-handlee: "Handlee", "sans-serif";
 
   --text-hero-title: clamp(36px, 4vw, 64px);
+  --text-hero-inner-title: clamp(28px, 4vw, 56px);
   --text-hero-subtitle: clamp(16px, 3vw, 22px);
 
   --text-subtitle: clamp(32px, 3vw, 44px);
