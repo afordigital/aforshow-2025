@@ -74,7 +74,6 @@ const devMode = import.meta.env.DEV;
     const userPublicPayload = user
       ? {
           userId: user.id || "anonymous",
-          userEmail: user.email || "anonymous",
           userName: user.user_metadata?.name.split("#")[0] || "anonymous",
         }
       : null;
