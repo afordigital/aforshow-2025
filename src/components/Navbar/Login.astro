@@ -1,0 +1,84 @@
+---
+import Discord from "@assets/icons/discord.svg";
+
+interface Props {
+  class?: string;
+}
+
+const { class: classname } = Astro.props as Props;
+---
+
+<div class:list={["user", classname]}>
+  <button
+    class="login bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer flex items-center gap-2"
+    type="button"
+  >
+    <Discord class="pointer-events-none" width={24} height={24} />
+    <span class="pointer-events-none">Iniciar sesión</span>
+  </button>
+</div>
+
+<script>
+  import { supabase } from "@lib/supabase";
+
+  const $userContainers = document.querySelectorAll(".user") as NodeListOf<HTMLDivElement>;
+  const $loginButtons = document.querySelectorAll(".login") as NodeListOf<HTMLButtonElement>;
+
+  async function loginWithDiscord() {
+    await supabase.auth.signInWithOAuth({ provider: "discord" });
+  }
+  $loginButtons.forEach(($loginButton) => {
+    $loginButton?.addEventListener("click", loginWithDiscord);
+  });
+
+  async function logout() {
+    await supabase.auth.signOut();
+    window.location.reload();
+  }
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session?.user) {
+    const user = session.user;
+    const { name, avatar_url } = user.user_metadata;
+
+    const username = name.split("#")[0];
+
+    const userTemplate = `
+      <div>
+        <img
+          class="rounded-full aspect-square"
+          width="48"
+          height="48"
+          src="${avatar_url}"
+          alt="Imagen de perfil de @${username}"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="flex flex-col">
+        <span class="font-semibold">@${username}</span>
+        <button class="logout text-cs-primary hover:underline text-sm" type="button">
+          Cerrar sesión
+        </button>
+      </div>
+    `;
+
+    $loginButtons.forEach(($loginButton) => {
+      $loginButton?.remove();
+    });
+
+    $userContainers?.forEach((userContainer) => {
+      userContainer.insertAdjacentHTML("beforeend", userTemplate);
+      userContainer.querySelector(".logout")?.addEventListener("click", logout);
+    });
+
+    await supabase.from("users").upsert({
+      id: user.id,
+      username: name,
+      avatar_url,
+    });
+  }
+</script>
