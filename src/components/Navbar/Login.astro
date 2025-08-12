@@ -18,22 +18,9 @@ const { class: classname } = Astro.props as Props;
   <span class="pointer-events-none">Iniciar sesión</span>
 </button>
 <div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
-<div
-  id="supabase-config"
-  data-url={import.meta.env.PUBLIC_SUPABASE_URL}
-  data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
-  class="sr-only"
->
-</div>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  const config = document.getElementById("supabase-config");
-  const SUPABASE_URL = config.dataset.url;
-  const SUPABASE_ANON_KEY = config.dataset.key;
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<script>
+  import { supabase } from "../../lib/supabase";
 
   const $loginBtn = document.getElementById("login-btn");
   const $userDiv = document.getElementById("user-info");
@@ -61,21 +48,24 @@ const { class: classname } = Astro.props as Props;
       const displayName = custom_claims.global_name;
       const username = name.split("#")[0];
 
-      $userDiv.classList.remove("hidden");
-      $userDiv.classList.add("flex");
-      $userDiv.innerHTML = `
-        <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />
-        <div class="flex flex-col">
-          <span class="font-semibold">${displayName}</span>
-          <span class="text-xs text-gray-500">${username}</span>
-          <button
-            id="logout-btn"
-            class="text-cs-primary hover:underline cursor-pointer text-sm flex"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      `;
+      $userDiv?.classList.remove("hidden");
+      $userDiv?.classList.add("flex");
+
+      if ($userDiv) {
+        $userDiv.innerHTML = `
+          <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />
+          <div class="flex flex-col">
+            <span class="font-semibold">${displayName}</span>
+            <span class="text-xs text-gray-500">${username}</span>
+            <button
+              id="logout-btn"
+              class="text-cs-primary hover:underline cursor-pointer text-sm flex"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        `;
+      }
 
       $loginBtn?.remove();
 
