@@ -67,8 +67,6 @@ import ShareTicket from "./ShareTicket.astro";
     ) as HTMLElement;
 
     if (user?.user) {
-      console.log("entré en el if");
-
       $blurredTicket.style.display = "none";
       $ticketContainer.style.display = "flex";
       const name = user.user.user_metadata.name.split("#")[0];
@@ -84,11 +82,8 @@ import ShareTicket from "./ShareTicket.astro";
         $downloadButton.download = `ticket-${safeName}.png`;
       }
     } else {
-      console.log("No user");
-      console.log("antes", $ticketContainer);
       $blurredTicket.style.display = "flex";
       $ticketContainer.style.display = "none";
-      console.log("despues", $ticketContainer);
     }
   });
 </script>
