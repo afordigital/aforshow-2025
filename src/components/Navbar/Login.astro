@@ -1,5 +1,5 @@
 ---
-import Discord from "@assets/icons/discord.svg";
+import Twitch from "@assets/icons/twitch.svg";
 
 interface Props {
   class?: string;
@@ -9,26 +9,34 @@ const { class: classname } = Astro.props as Props;
 ---
 
 <div class:list={["user", classname]}>
-  <button
-    class="login bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer flex items-center gap-2"
-    type="button"
-  >
-    <Discord class="pointer-events-none" width={24} height={24} />
-    <span class="pointer-events-none">Iniciar sesión</span>
-  </button>
+  <div class="login-buttons flex gap-2">
+    <button
+      class="login-twitch bg-[#9146FF] text-white border border-transparent rounded-md px-4 py-2 text-sm font-medium hover:bg-[#7a3be0] focus:outline-none focus:ring-2 focus:ring-[#9146FF] cursor-pointer flex items-center justify-center gap-2"
+      type="button"
+    >
+      <Twitch class="pointer-events-none" width={24} height={24} />
+      <span class="pointer-events-none">Iniciar sesión con Twitch</span>
+    </button>
+  </div>
 </div>
 
 <script>
   import { supabase } from "@lib/supabase";
 
-  const $userContainers = document.querySelectorAll(".user") as NodeListOf<HTMLDivElement>;
-  const $loginButtons = document.querySelectorAll(".login") as NodeListOf<HTMLButtonElement>;
+  const $userContainers = document.querySelectorAll(
+    ".user",
+  ) as NodeListOf<HTMLDivElement>;
+  const $loginButtonsContainers = document.querySelectorAll(".login-buttons");
+  const $loginTwitchButtons = document.querySelectorAll(
+    ".login-twitch",
+  ) as NodeListOf<HTMLButtonElement>;
 
-  async function loginWithDiscord() {
-    await supabase.auth.signInWithOAuth({ provider: "discord" });
+  async function loginWithTwitch() {
+    await supabase.auth.signInWithOAuth({ provider: "twitch" });
   }
-  $loginButtons.forEach(($loginButton) => {
-    $loginButton?.addEventListener("click", loginWithDiscord);
+
+  $loginTwitchButtons.forEach((button) => {
+    button.addEventListener("click", loginWithTwitch);
   });
 
   async function logout() {
@@ -41,13 +49,21 @@ const { class: classname } = Astro.props as Props;
   } = await supabase.auth.getSession();
 
   if (session?.user) {
-    const user = session.user;
-    const { name, avatar_url } = user.user_metadata;
+    $loginButtonsContainers.forEach((container) => container.remove());
 
-    const username = name.split("#")[0];
+    const user = session.user;
+    const { avatar_url, preferred_username, full_name, name } =
+      user.user_metadata;
+
+    const username = (
+      preferred_username ||
+      full_name ||
+      name ||
+      "usuario"
+    ).trim();
 
     const userTemplate = `
-      <div>
+      <div class="flex items-center gap-2">
         <img
           class="rounded-full aspect-square"
           width="48"
@@ -57,27 +73,24 @@ const { class: classname } = Astro.props as Props;
           decoding="async"
           fetchpriority="high"
         />
-      </div>
-      <div class="flex flex-col">
-        <span class="font-semibold">@${username}</span>
-        <button class="logout text-cs-primary hover:underline text-sm" type="button">
-          Cerrar sesión
-        </button>
+        <div class="flex flex-col">
+          <span class="font-semibold">@${username}</span>
+          <button class="logout text-cs-primary hover:underline text-sm text-left" type="button">
+            Cerrar sesión
+          </button>
+        </div>
       </div>
     `;
 
-    $loginButtons.forEach(($loginButton) => {
-      $loginButton?.remove();
-    });
-
-    $userContainers?.forEach((userContainer) => {
+    $userContainers.forEach((userContainer) => {
       userContainer.insertAdjacentHTML("beforeend", userTemplate);
       userContainer.querySelector(".logout")?.addEventListener("click", logout);
     });
 
     await supabase.from("users").upsert({
       id: user.id,
-      username: name,
+      username: username,
+      name: username,
       avatar_url,
     });
   }
