@@ -8,87 +8,77 @@ interface Props {
 const { class: classname } = Astro.props as Props;
 ---
 
-<button
-  id="login-btn"
-  class:list={
-    ["bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer", classname]
-  }
->
-  <Discord class="pointer-events-none" width={24} height={24} />
-  <span class="pointer-events-none">Iniciar sesión</span>
-</button>
-<div id="user-info" class="items-center gap-2 leading-4 hidden"></div>
-<div
-  id="supabase-config"
-  data-url={import.meta.env.PUBLIC_SUPABASE_URL}
-  data-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
-  class="sr-only"
->
+<div class:list={["user", classname]}>
+  <button
+    class="login bg-white border border-gray-300 rounded-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer flex items-center gap-2"
+    type="button"
+  >
+    <Discord class="pointer-events-none" width={24} height={24} />
+    <span class="pointer-events-none">Iniciar sesión</span>
+  </button>
 </div>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+<script>
+  import { supabase } from "@lib/supabase";
 
-  const config = document.getElementById("supabase-config");
-  const SUPABASE_URL = config.dataset.url;
-  const SUPABASE_ANON_KEY = config.dataset.key;
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  const $loginBtn = document.getElementById("login-btn");
-  const $userDiv = document.getElementById("user-info");
+  const $userContainers = document.querySelectorAll(".user") as NodeListOf<HTMLDivElement>;
+  const $loginButtons = document.querySelectorAll(".login") as NodeListOf<HTMLButtonElement>;
 
   async function loginWithDiscord() {
     await supabase.auth.signInWithOAuth({ provider: "discord" });
   }
+  $loginButtons.forEach(($loginButton) => {
+    $loginButton?.addEventListener("click", loginWithDiscord);
+  });
 
   async function logout() {
     await supabase.auth.signOut();
     window.location.reload();
   }
 
-  $loginBtn?.addEventListener("click", loginWithDiscord);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  async function checkSession() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+  if (session?.user) {
+    const user = session.user;
+    const { name, avatar_url } = user.user_metadata;
 
-    if (session?.user) {
-      const user = session.user;
-      const { name, avatar_url, custom_claims } = user.user_metadata;
+    const username = name.split("#")[0];
 
-      const displayName = custom_claims.global_name;
-      const username = name.split("#")[0];
+    const userTemplate = `
+      <div>
+        <img
+          class="rounded-full aspect-square"
+          width="48"
+          height="48"
+          src="${avatar_url}"
+          alt="Imagen de perfil de @${username}"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="flex flex-col">
+        <span class="font-semibold">@${username}</span>
+        <button class="logout text-cs-primary hover:underline text-sm" type="button">
+          Cerrar sesión
+        </button>
+      </div>
+    `;
 
-      $userDiv.classList.remove("hidden");
-      $userDiv.classList.add("flex");
-      $userDiv.innerHTML = `
-        <img src="${avatar_url}" alt="avatar" class="w-12 h-12 rounded-full" />
-        <div class="flex flex-col">
-          <span class="font-semibold">${displayName}</span>
-          <span class="text-xs text-gray-500">${username}</span>
-          <button
-            id="logout-btn"
-            class="text-cs-primary hover:underline cursor-pointer text-sm flex"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      `;
+    $loginButtons.forEach(($loginButton) => {
+      $loginButton?.remove();
+    });
 
-      $loginBtn?.remove();
+    $userContainers?.forEach((userContainer) => {
+      userContainer.insertAdjacentHTML("beforeend", userTemplate);
+      userContainer.querySelector(".logout")?.addEventListener("click", logout);
+    });
 
-      const $logoutBtn = document.getElementById("logout-btn");
-      $logoutBtn?.addEventListener("click", logout);
-
-      await supabase.from("users").upsert({
-        id: user.id,
-        username: name,
-        avatar_url,
-      });
-    }
+    await supabase.from("users").upsert({
+      id: user.id,
+      username: name,
+      avatar_url,
+    });
   }
-
-  checkSession();
 </script>

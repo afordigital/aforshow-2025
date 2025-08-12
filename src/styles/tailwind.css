@@ -15,6 +15,14 @@
   --color-cs-background: #f5f5f5;
 }
 
+@utility content-hidden {
+  content-visibility: hidden;
+}
+
+@utility content-visible {
+  content-visibility: visible;
+}
+
 body {
   cursor: url("/imgs/arrow-cursor-outline.svg"), auto;
 }
