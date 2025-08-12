@@ -30,7 +30,7 @@ interface Props {
 const { class: classname, childClass, ...props } = Astro.props as Props;
 ---
 
-<nav class={classname} {...props}>
+<nav class={classname} {...props} data-links>
   <ul class={childClass}>
     {
       links.map(({ href, label }) => (
@@ -39,3 +39,25 @@ const { class: classname, childClass, ...props } = Astro.props as Props;
     }
   </ul>
 </nav>
+
+<script>
+  const nav = document.querySelector('nav[data-links]');
+  if (nav) {
+    const anchors = Array.from(nav.querySelectorAll('a[href]'));
+    const activeClasses = ['underline', 'underline-offset-4', 'decoration-2'];
+
+    function updateActiveLink() {
+      const hash = window.location.hash;
+      const onHome = window.location.pathname === '/';
+      anchors.forEach((anchor) => {
+        const href = anchor.getAttribute('href');
+        const isActive = hash ? href === hash : (onHome && href === '/');
+        activeClasses.forEach((cls) => anchor.classList.toggle(cls, isActive));
+        anchor.setAttribute('aria-current', isActive ? 'page' : 'false');
+      });
+    }
+
+    updateActiveLink();
+    window.addEventListener('hashchange', updateActiveLink);
+  }
+</script>
