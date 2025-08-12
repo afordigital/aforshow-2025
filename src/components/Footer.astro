@@ -24,87 +24,51 @@ import { contributors } from "../lib/contributors";
     </div>
   </section>
   <section class="flex flex-col items-center gap-2">
-    <h1>Contributors</h1>
     <div class="flex gap-2">
-      <a
-        href="https://github.com/afordigital"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
+      {
+        contributors
+          .filter((_, index) => {
+            return index < 4;
+          })
+          .map((contributor) => {
+            return (
+              <a
+                href={contributor.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={contributor.img}
+                  alt="Contributor afor"
+                  class="w-12 h-12"
+                />
+              </a>
+            );
+          })
+      }
     </div>
     <div class="flex gap-2">
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
-      <a
-        href="https://github.com/aforcita"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="/contributors/aforcita.svg"
-          alt="Contributor afor"
-          class="w-12 h-12"
-        />
-      </a>
+      {
+        contributors
+          .filter((_, index) => {
+            return index >= 4 && index < 8;
+          })
+          .map((contributor) => {
+            return (
+              <a
+                href={contributor.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={contributor.img}
+                  alt="Contributor afor"
+                  class="w-12 h-12"
+                />
+              </a>
+            );
+          })
+      }
     </div>
   </section>
 </footer>

@@ -31,12 +31,18 @@ export const contributors = [
   },
   {
     id: 5,
+    title: "Bulbito",
+    img: "/contributors/aforcita.svg",
+    github_url: "https://github.com/Ch1py7",
+  },
+  {
+    id: 6,
     title: "Mateo Morales",
     img: "/contributors/vimofama.svg",
     github_url: "https://github.com/vimofama",
   },
   {
-    id: 6,
+    id: 7,
     title: "Leonardo Salazar",
     img: "/contributors/aforcita.svg",
     github_url: "https://github.com/developerleonardo",
