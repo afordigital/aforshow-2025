@@ -24,15 +24,21 @@ const { class: classname } = Astro.props as Props;
   import { supabase } from "@lib/supabase";
 
   const $userContainers = document.querySelectorAll(
-    ".user"
+    ".user",
   ) as NodeListOf<HTMLDivElement>;
   const $loginButtonsContainers = document.querySelectorAll(".login-buttons");
   const $loginTwitchButtons = document.querySelectorAll(
-    ".login-twitch"
+    ".login-twitch",
   ) as NodeListOf<HTMLButtonElement>;
 
   async function loginWithTwitch() {
-    await supabase.auth.signInWithOAuth({ provider: "twitch" });
+    await supabase.auth.signInWithOAuth({
+      provider: "twitch",
+      options: {
+        scopes:
+          "user:read:email channel:read:redemptions user:read:subscriptions",
+      },
+    });
   }
 
   $loginTwitchButtons.forEach((button) => {
