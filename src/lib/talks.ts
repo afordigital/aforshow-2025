@@ -1,39 +1,44 @@
 export const talks = [
   {
     id: 0,
-    title: "API-first: Cómo diseñar backends pensando en frontend y QA",
+    title:
+      "Las postulaciones todavía estan abiertas, ¡aquí podría estar el título de tu charla!",
     img: "/imgs/question.webp",
-    author: "Jarrison Cano",
+    author: "Por definir",
     hour: "20.00h",
   },
   {
     id: 1,
     hasBreak: true,
-    title: "Pequeños detalles, gran impacto: UX microinteractions",
+    title:
+      "Las postulaciones todavía estan abiertas, ¡aquí podría estar el título de tu charla!",
     img: "/imgs/question.webp",
-    author: "Joseph aka xq",
+    author: "Por definir",
     hour: "20.30h",
   },
   {
     id: 2,
-    title: "QA desde el primer commit: Testing para todos",
+    title:
+      "Las postulaciones todavía estan abiertas, ¡aquí podría estar el título de tu charla!",
     img: "/imgs/question.webp",
-    author: "Laura Nicole",
+    author: "Por definir",
     hour: "21.30h",
   },
   {
     id: 3,
     hasBreak: true,
-    title: "Frontend moderno con React + Tailwind + Shadcn",
+    title:
+      "Las postulaciones todavía estan abiertas, ¡aquí podría estar el título de tu charla!",
     img: "/imgs/question.webp",
-    author: "Felixicaza",
+    author: "Por definir",
     hour: "22.00h",
   },
   {
     id: 4,
-    title: "Diseña como un sistema: Introducción a Design Systems",
+    title:
+      "Las postulaciones todavía estan abiertas, ¡aquí podría estar el título de tu charla!",
     img: "/imgs/question.webp",
-    author: "Cristina aka krepsi",
+    author: "Por definir",
     hour: "23.00h",
   },
 ];
