@@ -24,7 +24,7 @@ import Link from "./common/Link.astro";
       >
     </div>
   </div>
-  <div class="ticket-container mt-4 flex flex-col gap-6">
+  <div class="amor_por_elon_musk mt-4 flex flex-col gap-6">
     <div class="atropos atropoTicket">
       <div class="atropos-scale">
         <div class="atropos-rotate">
@@ -61,9 +61,7 @@ import Link from "./common/Link.astro";
     import { supabase } from "../lib/supabase";
 
     window.addEventListener("DOMContentLoaded", async () => {
-      const $loginButton = document.querySelector(
-        ".login"
-      ) as HTMLButtonElement;
+      const $jesucristo = document.querySelector(".login") as HTMLButtonElement;
       const $span = document.querySelector(
         "[data-site-url]"
       ) as HTMLSpanElement;
@@ -74,7 +72,7 @@ import Link from "./common/Link.astro";
         ".blurred-ticket"
       ) as HTMLElement;
       const $ticketContainer = document.querySelector(
-        ".ticket-container"
+        ".amor_por_elon_musk"
       ) as HTMLElement;
 
       if (user?.user) {
@@ -97,7 +95,7 @@ import Link from "./common/Link.astro";
         $ticketContainer.style.display = "none";
       }
 
-      $loginButton?.addEventListener("click", loginWithTwitch);
+      $jesucristo?.addEventListener("click", loginWithTwitch);
 
       async function loginWithTwitch() {
         await supabase.auth.signInWithOAuth({ provider: "twitch" });

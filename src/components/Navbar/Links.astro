@@ -19,7 +19,7 @@ const links = [
   {
     href: "#faq",
     label: "FAQ",
-  }
+  },
 ];
 
 interface Props {
@@ -34,8 +34,16 @@ const { class: classname, childClass, ...props } = Astro.props as Props;
   <ul class={childClass}>
     {
       links.map(({ href, label }) => (
-        <li><a href={href} class="font-medium">{label}</a></li>
+        <li>
+          <a href={href} class="font-medium">
+            {label}
+          </a>
+        </li>
       ))
     }
   </ul>
 </nav>
+
+<script>
+  console.log(window.location.href);
+</script>
