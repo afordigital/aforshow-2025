@@ -97,10 +97,10 @@ import Link from "./common/Link.astro";
         $ticketContainer.style.display = "none";
       }
 
-      $loginButton?.addEventListener("click", loginWithDiscord);
+      $loginButton?.addEventListener("click", loginWithTwitch);
 
-      async function loginWithDiscord() {
-        await supabase.auth.signInWithOAuth({ provider: "discord" });
+      async function loginWithTwitch() {
+        await supabase.auth.signInWithOAuth({ provider: "twitch" });
       }
     });
   </script>

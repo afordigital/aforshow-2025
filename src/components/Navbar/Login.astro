@@ -15,7 +15,7 @@ const { class: classname } = Astro.props as Props;
       type="button"
     >
       <Twitch class="pointer-events-none" width={24} height={24} />
-      <span class="pointer-events-none">Iniciar sesión con Twitch</span>
+      <span class="pointer-events-none">Iniciar sesión</span>
     </button>
   </div>
 </div>
@@ -24,11 +24,11 @@ const { class: classname } = Astro.props as Props;
   import { supabase } from "@lib/supabase";
 
   const $userContainers = document.querySelectorAll(
-    ".user",
+    ".user"
   ) as NodeListOf<HTMLDivElement>;
   const $loginButtonsContainers = document.querySelectorAll(".login-buttons");
   const $loginTwitchButtons = document.querySelectorAll(
-    ".login-twitch",
+    ".login-twitch"
   ) as NodeListOf<HTMLButtonElement>;
 
   async function loginWithTwitch() {
