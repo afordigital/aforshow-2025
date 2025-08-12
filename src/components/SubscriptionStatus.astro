@@ -1,0 +1,66 @@
+<div
+  id="subscription-status-container"
+  class="p-4 border border-gray-200 rounded-lg bg-gray-50 text-gray-800"
+>
+  <h3 class="font-bold text-lg mb-2">Subscription Status</h3>
+  <div id="status-content">
+    <p>Loading...</p>
+  </div>
+</div>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const statusContainer = document.getElementById("status-content");
+    if (!statusContainer) return;
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+      statusContainer.innerHTML = `<p>Please log in to check your subscription.</p>`;
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/subscription", {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Could not retrieve status.");
+      }
+
+      if (data.isSubscribed) {
+        const tier =
+          data.subscription.tier === "prime"
+            ? "Twitch Prime"
+            : `Tier ${parseInt(data.subscription.tier) / 1000}`;
+
+        statusContainer.innerHTML = `
+          <p class="text-green-600 font-semibold">
+            ✅ You are subscribed!
+          </p>
+          <p class="mt-1">
+            Current Tier: <strong>${tier}</strong>
+          </p>
+        `;
+      } else {
+        statusContainer.innerHTML = `
+          <p class="text-red-600 font-semibold">
+            ❌ You are not subscribed.
+          </p>
+        `;
+      }
+    } catch (error) {
+      if (error instanceof Error)
+        statusContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+    }
+  });
+</script>
