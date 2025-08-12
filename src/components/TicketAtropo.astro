@@ -1,6 +1,7 @@
 ---
 import Ticket from "./Ticket.astro";
 import ShareTicket from "./ShareTicket.astro";
+import Link from "./common/Link.astro";
 ---
 
 <section id="ticket" class="flex flex-col">
@@ -16,6 +17,12 @@ import ShareTicket from "./ShareTicket.astro";
   </div>
   <div class="blurred-ticket relative">
     <img src="/imgs/blurredTicket.webp" alt="Blurred ticket" class="w-full" />
+    <div class="absolute inset-0 flex justify-center items-center">
+      <button
+        class="login py-2 rounded-md text-base font-medium bg-gradient-to-b from-cs-primary to-cs-secondary text-white px-5 hover:bg-gradient-to-b hover:from-cs-primary-hover hover:to-cs-secondary-hover"
+        >Obten tu ticket</button
+      >
+    </div>
   </div>
   <div class="ticket-container mt-4 flex flex-col gap-6">
     <div class="atropos atropoTicket">
@@ -37,60 +44,71 @@ import ShareTicket from "./ShareTicket.astro";
     </div>
     <span class="sr-only" data-site-url={Astro.site}></span>
   </div>
-</section>
 
-<script>
-  import Atropos from "atropos";
+  <script>
+    import Atropos from "atropos";
 
-  const atropoTicket = Atropos({
-    el: ".atropoTicket",
-    shadow: true,
-    highlight: true,
-    activeOffset: 40,
-    shadowScale: 0.8,
-  });
-</script>
+    const atropoTicket = Atropos({
+      el: ".atropoTicket",
+      shadow: true,
+      highlight: true,
+      activeOffset: 40,
+      shadowScale: 0.8,
+    });
+  </script>
 
-<script>
-  import { supabase } from "../lib/supabase";
+  <script>
+    import { supabase } from "../lib/supabase";
 
-  window.addEventListener("DOMContentLoaded", async () => {
-    const $span = document.querySelector("[data-site-url]") as HTMLSpanElement;
-    const siteUrl = $span?.dataset.siteUrl;
-    const { data: user } = await supabase.auth.getUser();
+    window.addEventListener("DOMContentLoaded", async () => {
+      const $loginButton = document.querySelector(
+        ".login"
+      ) as HTMLButtonElement;
+      const $span = document.querySelector(
+        "[data-site-url]"
+      ) as HTMLSpanElement;
+      const siteUrl = $span?.dataset.siteUrl;
+      const { data: user } = await supabase.auth.getUser();
 
-    const $blurredTicket = document.querySelector(
-      ".blurred-ticket"
-    ) as HTMLElement;
-    const $ticketContainer = document.querySelector(
-      ".ticket-container"
-    ) as HTMLElement;
+      const $blurredTicket = document.querySelector(
+        ".blurred-ticket"
+      ) as HTMLElement;
+      const $ticketContainer = document.querySelector(
+        ".ticket-container"
+      ) as HTMLElement;
 
-    if (user?.user) {
-      $blurredTicket.style.display = "none";
-      $ticketContainer.style.display = "flex";
-      const name = user.user.user_metadata.name.split("#")[0];
-      const ticketSrc = `${siteUrl}api/og/${name}`;
+      if (user?.user) {
+        $blurredTicket.style.display = "none";
+        $ticketContainer.style.display = "flex";
+        const name = user.user.user_metadata.name.split("#")[0];
+        const ticketSrc = `${siteUrl}api/og/${name}`;
 
-      const $downloadButton = document.getElementById(
-        "download-ticket"
-      ) as HTMLAnchorElement;
+        const $downloadButton = document.getElementById(
+          "download-ticket"
+        ) as HTMLAnchorElement;
 
-      if ($downloadButton) {
-        const safeName = encodeURIComponent(name);
-        $downloadButton.href = ticketSrc;
-        $downloadButton.download = `ticket-${safeName}.png`;
+        if ($downloadButton) {
+          const safeName = encodeURIComponent(name);
+          $downloadButton.href = ticketSrc;
+          $downloadButton.download = `ticket-${safeName}.png`;
+        }
+      } else {
+        $blurredTicket.style.display = "flex";
+        $ticketContainer.style.display = "none";
       }
-    } else {
-      $blurredTicket.style.display = "flex";
-      $ticketContainer.style.display = "none";
-    }
-  });
-</script>
 
-<style is:global>
-  .atropoTicket {
-    width: 666px;
-    height: 332px;
-  }
-</style>
+      $loginButton?.addEventListener("click", loginWithDiscord);
+
+      async function loginWithDiscord() {
+        await supabase.auth.signInWithOAuth({ provider: "discord" });
+      }
+    });
+  </script>
+
+  <style is:global>
+    .atropoTicket {
+      width: 666px;
+      height: 332px;
+    }
+  </style>
+</section>
