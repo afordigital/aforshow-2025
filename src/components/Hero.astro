@@ -6,7 +6,10 @@ import Link from "./common/Link.astro";
 <header class="flex flex-col gap-6 items-center">
   <div class="flex flex-col gap-3 items-center">
     <hgroup class="flex flex-col items-center px-4">
-      <h1 class="fade-in-up text-hero-title text-center font-semibold font-handlee leading-12" style="--stagger:0">
+      <h1
+        class="fade-in-up text-hero-title text-center font-semibold font-handlee leading-12"
+        style="--stagger:0"
+      >
         AforShow 2025
       </h1>
       <p class="text-hero-inner-title text-center font-semibold font-handlee">
@@ -21,21 +24,28 @@ import Link from "./common/Link.astro";
         </span>
       </p>
     </hgroup>
-    <p class="fade-in-up text-hero-subtitle max-w-[553px] mx-auto text-center" style="--stagger:4">
+    <p
+      class="fade-in-up text-hero-subtitle max-w-[553px] mx-auto text-center"
+      style="--stagger:4"
+    >
       Transforma ideas en conocimiento en el mayor evento de charlas sobre
       programación web.
     </p>
   </div>
 
   <footer style="--stagger:4" class="flex gap-4 items-center fade-in-up">
-    <Link href="/tickets" variant="primary">¡Votar charlas!</Link>
+    <Link href="https://forms.gle/8Cc2VPPSoDqdnctr9" variant="primary"
+      >¡Postular mi charla!</Link
+    >
     <Link
       href="https://youtu.be/LR3OpzyCQWM?si=_RulGhyygToeFNFs"
       variant="secondary">Ver charlas pasadas</Link
     >
   </footer>
 
-  <section class="flex xl:max-2xl:justify-start 2xl:justify-end w-full h-[350px] pointer-events-none overflow-x-hidden">
+  <section
+    class="flex xl:max-2xl:justify-start 2xl:justify-end w-full h-[350px] pointer-events-none overflow-x-hidden"
+  >
     <HeroSvg class="-translate-x-10 shrink-0 h-[350px] xl:translate-x-0" />
   </section>
 </header>

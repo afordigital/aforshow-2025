@@ -2,6 +2,7 @@
 
 @theme {
   --font-handlee: "Handlee", "sans-serif";
+  --font-inter: "Inter", "sans-serif";
 
   --text-hero-title: clamp(36px, 4vw, 64px);
   --text-hero-inner-title: clamp(28px, 4vw, 56px);
@@ -10,8 +11,10 @@
   --text-subtitle: clamp(32px, 3vw, 44px);
 
   --color-cs-black: #0f172a;
-  --color-cs-primary: #f43e71;
-  --color-cs-primary-hover: #ff608d;
+  --color-cs-primary: #fc1c37;
+  --color-cs-primary-hover: #f73950;
+  --color-cs-secondary: #ad40e1;
+  --color-cs-secondary-hover: #b55ae0;
   --color-cs-background: #f5f5f5;
 }
 
@@ -85,4 +88,9 @@ select {
   src: url("/fonts/Handlee-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2");
 }
