@@ -92,12 +92,5 @@ const { class: classname } = Astro.props as Props;
       userContainer.insertAdjacentHTML("beforeend", userTemplate);
       userContainer.querySelector(".logout")?.addEventListener("click", logout);
     });
-
-    await supabase.from("users").upsert({
-      id: user.id,
-      username: username,
-      name: username,
-      avatar_url,
-    });
   }
 </script>
