@@ -2,8 +2,8 @@
 import { contributors } from "../lib/contributors";
 ---
 
-<footer class="w-full flex font-medium items-center justify-between">
-  <section class="flex flex-col gap-2">
+<footer class="flex flex-col lg:flex-row font-medium w-full gap-12 items-center justify-between">
+  <section class="flex flex-col gap-2 order-2 lg:order-first text-center">
     <a href="/" class="font-handlee text-3xl">Aforshow</a>
     <div class="flex mb-2 gap-1">
       <p>
@@ -23,7 +23,7 @@ import { contributors } from "../lib/contributors";
       />
     </div>
   </section>
-  <section class="flex flex-col items-center gap-2">
+  <section class="flex flex-col items-center gap-2 order-1 lg:order-last">
     <div class="flex gap-2">
       {
         contributors
@@ -38,9 +38,14 @@ import { contributors } from "../lib/contributors";
                 rel="noopener noreferrer"
               >
                 <img
+                  class="aspect-square"
+                  width="48"
+                  height="48"
                   src={contributor.img}
                   alt="Contributor afor"
-                  class="w-12 h-12"
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 />
               </a>
             );
@@ -61,9 +66,14 @@ import { contributors } from "../lib/contributors";
                 rel="noopener noreferrer"
               >
                 <img
+                  class="aspect-square"
+                  width="48"
+                  height="48"
                   src={contributor.img}
                   alt="Contributor afor"
-                  class="w-12 h-12"
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 />
               </a>
             );
