@@ -7,7 +7,8 @@
 ![GitHub issues](https://img.shields.io/github/issues/Afordin/aforshow-2025)
 ![Contributors](https://img.shields.io/github/contributors/Afordin/aforshow-2025)
 
-Afordin is the best programming and web design community in the world where creativity meets code, and developers of all levels connect, learn, and grow together.
+Aforshow is a programming event made for developers by developers to give them the opportunity to give a talk.
+You can demonstrate your talent by participating giving a talk.
 
 [Figma Design
 ](https://www.figma.com/design/pEtssqjyqA41RouHEgV5xU/Afordin-Designs?node-id=0-1&t=SRrsgqnxyVxQHBhd-1) · [Report a bug](https://github.com/Afordin/aforshow-2025/issues)
@@ -16,7 +17,8 @@ Afordin is the best programming and web design community in the world where crea
 
 ## Screenshots
 
-![image](https://i.imgur.com/yZOGJjL.png)
+<img width="1904" height="987" alt="Screenshot 2025-08-16 163519" src="https://github.com/user-attachments/assets/25e787f7-1557-4167-bdf3-f0a160954fa8" />
+
 
 ## 📚 Table of Contents
 
