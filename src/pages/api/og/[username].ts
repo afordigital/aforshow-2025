@@ -5,22 +5,21 @@ import { html } from "satori-html";
 import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ReactNode } from "react";
 import sharp from "sharp";
 
 const handleeRegular = await fs.readFile(
   path.resolve("./public/fonts/Handlee-Regular.ttf"),
 );
 
-const supabase = createClient(
+const supabaseAdmin = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  import.meta.env.SUPABASE_SERVICE_KEY,
 );
 
 export const GET: APIRoute = async ({ params, request }) => {
   const username = params.username;
 
-  const { data: user, error } = await supabase
+  const { data: user, error } = await supabaseAdmin
     .from("users")
     .select("id, name, username, avatar_url")
     .eq("username", username)
@@ -85,7 +84,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   const markup = html(htmlTemplate);
 
   // 3. Usa Satori para generar el SVG
-  const svg = await satori(markup as ReactNode, {
+  const svg = await satori(markup, {
     width: 666,
     height: 332,
     fonts: [
