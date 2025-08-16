@@ -1,6 +1,7 @@
 ---
 import HeroSvg from "../../public/imgs/Hero.svg";
 import Link from "./common/Link.astro";
+import Countdown from "./Countdown.astro";
 ---
 
 <header class="flex flex-col gap-6 items-center">
@@ -32,6 +33,8 @@ import Link from "./common/Link.astro";
       programación web.
     </p>
   </div>
+  
+  <Countdown class="fade-in-up" />
 
   <footer style="--stagger:4" class="flex flex-col md:flex-row gap-6 md:gap-4 items-center fade-in-up">
     <Link href="https://forms.gle/8Cc2VPPSoDqdnctr9" variant="primary"
