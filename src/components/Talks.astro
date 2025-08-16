@@ -4,15 +4,21 @@ import Talk from "./common/Talk.astro";
 ---
 
 <section id="speakers" class="w-full flex flex-col items-center">
-  <header class="w-full flex items-baseline justify-center">
-    <img
-      src="/svgs/Talks.svg"
-      aria-hidden="true"
-      class="w-[80px] h-[80px] translate-y-6 -translate-x-3"
-    />
-    <h1 class="text-subtitle font-bold">Charlas y talleres</h1>
+  <header class="flex items-center justify-center gap-4 w-fit mx-auto">
+    <div>
+      <img
+        width="80"
+        height="80"
+        src="/svgs/Talks.svg"
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </div>
+    <h1 class="text-subtitle font-bold max-w-36 md:max-w-full leading-9">Charlas y talleres</h1>
   </header>
-  <ul class="flex flex-col w-full gap-4">
+  <ul class="flex flex-col w-full gap-6">
     {
       talks.map((talk) => (
         <>

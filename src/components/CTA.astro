@@ -3,31 +3,40 @@ import Link from "./common/Link.astro";
 ---
 
 <section class="w-full flex flex-col gap-6 items-center">
-  <div class="flex items-center gap-10">
-    <img
-      src="/svgs/LilPaw.svg"
-      alt="decorative hand"
-      aria-hidden="true"
-      height="110px"
-      width="96px"
-    />
+  <div class="flex items-center md:gap-4">
+    <div>
+      <img
+        class="aspect-square w-26 md:w-24"
+        width="96"
+        height="96"
+        src="/svgs/LilPaw.svg"
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </div>
     <h1 class="text-subtitle font-black text-center leading-10">
       Da tu primera<br /> charla de programación
     </h1>
-    <img
-      src="/svgs/LilPaw.svg"
-      class="-scale-x-100"
-      alt="decorative hand"
-      aria-hidden="true"
-      height="110px"
-      width="96px"
-    />
+    <div>
+      <img
+        class="aspect-square -scale-x-100 w-26 md:w-24"
+        width="96"
+        height="96"
+        src="/svgs/LilPaw.svg"
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </div>
   </div>
-  <p class="text-lg font-semibold">
+  <p class="text-lg font-semibold text-center text-balance">
     Inspira a otros programadores dando tu primera charla técnica, sin importar
     tu nivel
   </p>
-  <div class="flex gap-4 items-center mb-8">
+  <div class="flex gap-6 items-center mb-8">
     <Link href="https://forms.gle/8Cc2VPPSoDqdnctr9" variant="primary"
       >Inscribirme</Link
     >
@@ -37,10 +46,13 @@ import Link from "./common/Link.astro";
     >
   </div>
   <img
-    src="/svgs/CTA.svg"
-    aria-hidden="true"
+    class="aspect-square"
     width="440"
     height="440"
-    alt="decorative woman presenting a graphic"
+    src="/svgs/CTA.svg"
+    alt="Imagen decorativa de un hamster presentando un gráfico"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
   />
 </section>
