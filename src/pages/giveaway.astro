@@ -160,8 +160,10 @@ import Aptabase from "../components/Aptabase.astro";
     startTimer();
   });
 
+  let interval: ReturnType<typeof setInterval>;
+
   const startTimer = () => {
-    const interval = setInterval(() => {
+    interval = setInterval(() => {
       console.log(counter);
       counter--;
 
@@ -180,6 +182,7 @@ import Aptabase from "../components/Aptabase.astro";
   });
 
   const resetTimer = () => {
+    clearInterval(interval);
     counter = TIMER_SECONDS;
 
     if (!$timer) return;
