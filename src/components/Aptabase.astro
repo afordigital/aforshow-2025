@@ -1,0 +1,89 @@
+---
+const appKey = "A-SH-3887203412";
+const host = "https://aptabase.dokploy.dev";
+const devMode = import.meta.env.DEV;
+---
+
+<div
+  id="aptabase-tracker"
+  data-app-key={appKey}
+  data-host={host}
+  data-dev-mode={devMode.toString()}
+  style="display: none;"
+>
+</div>
+
+<script>
+  const trackerElement = document.getElementById("aptabase-tracker");
+  const appKey = trackerElement?.dataset.appKey;
+  const host = trackerElement?.dataset.host;
+  const devMode = trackerElement?.dataset.devMode === "true";
+  const API_URL = `${host}/api/v0/events`;
+
+  function newSessionId() {
+    const epochSec = Math.floor(Date.now() / 1000);
+    const rand = Math.floor(Math.random() * 1e8)
+      .toString()
+      .padStart(8, "0");
+    return `${epochSec}${rand}`;
+  }
+  const sessionId = newSessionId();
+
+  async function sendEvent(eventName: string, props = {}) {
+    if (!appKey || !host) {
+      console.error("Aptabase appKey or host is not configured.");
+      return;
+    }
+    const eventPayload = [
+      {
+        timestamp: new Date().toISOString(),
+        sessionId,
+        eventName,
+        systemProps: {
+          locale: navigator.language,
+          osName: (navigator as any).userAgentData?.platform || "unknown",
+          isDebug: devMode,
+          appVersion: "1.0.0",
+          sdkVersion: "astro-sdk@1.0.0",
+        },
+        props,
+      },
+    ];
+
+    try {
+      await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "App-Key": appKey,
+        },
+        credentials: "omit",
+        body: JSON.stringify(eventPayload),
+      });
+    } catch (err) {
+      console.error("Error sending event to Aptabase", err);
+    }
+  }
+
+  async function onRouteChange() {
+    sendEvent("page_changed", {
+      path: window.location.pathname + window.location.search,
+    });
+  }
+
+  onRouteChange();
+
+  window.addEventListener("popstate", onRouteChange);
+
+  const _push = history.pushState;
+  history.pushState = function (...args) {
+    _push.apply(this, args);
+    onRouteChange();
+  };
+
+  const _replace = history.replaceState;
+  history.replaceState = function (...args) {
+    _replace.apply(this, args);
+    onRouteChange();
+  };
+</script>
