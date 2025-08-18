@@ -5,7 +5,6 @@ import { html } from "satori-html";
 import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ReactNode } from "react";
 import sharp from "sharp";
 
 const handleeRegular = await fs.readFile(
@@ -85,7 +84,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   const markup = html(htmlTemplate);
 
   // 3. Usa Satori para generar el SVG
-  const svg = await satori(markup as ReactNode, {
+  const svg = await satori(markup, {
     width: 666,
     height: 332,
     fonts: [
