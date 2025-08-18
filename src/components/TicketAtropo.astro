@@ -4,20 +4,42 @@ import ShareTicket from "./ShareTicket.astro";
 ---
 
 <section id="ticket" class="flex flex-col">
-  <div class="flex w-full justify-center items-baseline">
-    <img
-      src="/svgs/Ticket.svg"
-      alt="ticket"
-      class="w-[144px] h-[120px] translate-y-10 z-10"
-    />
-    <h1 class="text-subtitle font-bold -translate-x-4">
+  <div class="flex items-center justify-center gap-2 md:gap-0 max-w-64 mx-auto md:max-w-full">
+    <div>
+      <img
+        class="aspect-[194/120] scale-[1.75] md:scale-[1.25]"
+        width="144"
+        height="120"
+        src="/svgs/Ticket.svg"
+        alt="ticket"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </div>
+    <h1 class="text-subtitle font-bold leading-9 max-w-46 md:max-w-full">
       Descarga tu ticket ya
     </h1>
   </div>
   <div class="blurred-ticket relative">
-    <img src="/imgs/blurredTicket.webp" alt="Blurred ticket" class="w-full" />
+    <img
+      class="aspect-[864/372]"
+      width="864"
+      height="372"
+      src="/imgs/blurredTicket.webp"
+      alt="Blurred ticket"
+      loading="lazy"
+      decoding="async"
+      fetchpriority="low"
+    />
+    <div class="absolute inset-0 flex justify-center items-center">
+      <button
+        class="login py-2 rounded-md text-base font-medium bg-gradient-to-b from-cs-primary to-cs-secondary text-white px-5 hover:bg-gradient-to-b hover:from-cs-primary-hover hover:to-cs-secondary-hover"
+        >Obten tu ticket</button
+      >
+    </div>
   </div>
-  <div class="ticket-container mt-4 flex flex-col gap-6">
+  <div class="amor_por_elon_musk mt-4 flex flex-col gap-6">
     <div class="atropos atropoTicket">
       <div class="atropos-scale">
         <div class="atropos-rotate">
@@ -37,60 +59,69 @@ import ShareTicket from "./ShareTicket.astro";
     </div>
     <span class="sr-only" data-site-url={Astro.site}></span>
   </div>
-</section>
 
-<script>
-  import Atropos from "atropos";
+  <script>
+    import Atropos from "atropos";
 
-  const atropoTicket = Atropos({
-    el: ".atropoTicket",
-    shadow: true,
-    highlight: true,
-    activeOffset: 40,
-    shadowScale: 0.8,
-  });
-</script>
+    Atropos({
+      el: ".atropoTicket",
+      shadow: true,
+      highlight: true,
+      activeOffset: 40,
+      shadowScale: 0.8,
+    });
+  </script>
 
-<script>
-  import { supabase } from "../lib/supabase";
+  <script>
+    import { supabase } from "../lib/supabase";
 
-  window.addEventListener("DOMContentLoaded", async () => {
-    const $span = document.querySelector("[data-site-url]") as HTMLSpanElement;
-    const siteUrl = $span?.dataset.siteUrl;
-    const { data: user } = await supabase.auth.getUser();
+    window.addEventListener("DOMContentLoaded", async () => {
+      const $jesucristo = document.querySelector(".login") as HTMLButtonElement;
+      const $span = document.querySelector(
+        "[data-site-url]"
+      ) as HTMLSpanElement;
+      const siteUrl = $span?.dataset.siteUrl;
+      const { data: user } = await supabase.auth.getUser();
 
-    const $blurredTicket = document.querySelector(
-      ".blurred-ticket"
-    ) as HTMLElement;
-    const $ticketContainer = document.querySelector(
-      ".ticket-container"
-    ) as HTMLElement;
+      const $blurredTicket = document.querySelector(
+        ".blurred-ticket"
+      ) as HTMLElement;
+      const $ticketContainer = document.querySelector(
+        ".amor_por_elon_musk"
+      ) as HTMLElement;
 
-    if (user?.user) {
-      $blurredTicket.style.display = "none";
-      $ticketContainer.style.display = "flex";
-      const name = user.user.user_metadata.name.split("#")[0];
-      const ticketSrc = `${siteUrl}api/og/${name}`;
+      if (user?.user) {
+        $blurredTicket.style.display = "none";
+        $ticketContainer.style.display = "flex";
+        const name = user.user.user_metadata.name.split("#")[0];
+        const ticketSrc = `${siteUrl}api/og/${name}`;
 
-      const $downloadButton = document.getElementById(
-        "download-ticket"
-      ) as HTMLAnchorElement;
+        const $downloadButton = document.getElementById(
+          "download-ticket"
+        ) as HTMLAnchorElement;
 
-      if ($downloadButton) {
-        const safeName = encodeURIComponent(name);
-        $downloadButton.href = ticketSrc;
-        $downloadButton.download = `ticket-${safeName}.png`;
+        if ($downloadButton) {
+          const safeName = encodeURIComponent(name);
+          $downloadButton.href = ticketSrc;
+          $downloadButton.download = `ticket-${safeName}.png`;
+        }
+      } else {
+        $blurredTicket.style.display = "flex";
+        $ticketContainer.style.display = "none";
       }
-    } else {
-      $blurredTicket.style.display = "flex";
-      $ticketContainer.style.display = "none";
-    }
-  });
-</script>
 
-<style is:global>
-  .atropoTicket {
-    width: 666px;
-    height: 332px;
-  }
-</style>
+      $jesucristo?.addEventListener("click", loginWithTwitch);
+
+      async function loginWithTwitch() {
+        await supabase.auth.signInWithOAuth({ provider: "twitch" });
+      }
+    });
+  </script>
+
+  <style is:global>
+    .atropoTicket {
+      width: 666px;
+      height: 332px;
+    }
+  </style>
+</section>

@@ -1,11 +1,12 @@
 ---
 import HeroSvg from "../../public/imgs/Hero.svg";
 import Link from "./common/Link.astro";
+import Countdown from "./Countdown.astro";
 ---
 
 <header class="flex flex-col gap-6 items-center">
-  <div class="flex flex-col gap-3 items-center">
-    <hgroup class="flex flex-col items-center px-4">
+  <div class="flex flex-col gap-3 items-center px-4">
+    <hgroup class="flex flex-col items-center">
       <h1
         class="fade-in-up text-hero-title text-center font-semibold font-handlee leading-12"
         style="--stagger:0"
@@ -25,15 +26,17 @@ import Link from "./common/Link.astro";
       </p>
     </hgroup>
     <p
-      class="fade-in-up text-hero-subtitle max-w-[553px] mx-auto text-center"
+      class="fade-in-up text-hero-subtitle max-w-[553px] mx-auto text-center text-pretty"
       style="--stagger:4"
     >
       Transforma ideas en conocimiento en el mayor evento de charlas sobre
       programación web.
     </p>
   </div>
+  
+  <Countdown class="fade-in-up" />
 
-  <footer style="--stagger:4" class="flex gap-4 items-center fade-in-up">
+  <footer style="--stagger:4" class="flex flex-col md:flex-row gap-6 md:gap-4 items-center fade-in-up">
     <Link href="https://forms.gle/8Cc2VPPSoDqdnctr9" variant="primary"
       >¡Postular mi charla!</Link
     >

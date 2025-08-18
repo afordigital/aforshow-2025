@@ -1,4 +1,5 @@
 ---
+import SubscriptionStatus from "@/components/SubscriptionStatus.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
 import FrequentQuestions from "../components/FrequentQuestions.astro";
@@ -11,16 +12,40 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
+  <!-- HTML Meta Tags -->
+    <title>Aforshow 2025</title>
+    <meta name="description" content="Aforshow is a programming event made for developers by developers to give them the opportunity to give a talk.
+    You can demonstrate your talent by participating giving a talk.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://aforshow.netlify.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aforshow 2025">
+    <meta property="og:description" content="Aforshow is a programming event made for developers by developers to give them the opportunity to give a talk.
+    You can demonstrate your talent by participating giving a talk.">
+    <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/07ce3027-3458-40ac-8104-7e77d217a6c7.png?token=q_ukfoZQ3Ol7Zd1ETbM3mkMCMJXAml7BCV2bwgsdl2o&height=622&width=1200&expires=33291354946">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="aforshow.netlify.app">
+    <meta property="twitter:url" content="https://aforshow.netlify.app/">
+    <meta name="twitter:title" content="Aforshow 2025">
+    <meta name="twitter:description" content="Aforshow is a programming event made for developers by developers to give them the opportunity to give a talk.
+    You can demonstrate your talent by participating giving a talk.">
+    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/07ce3027-3458-40ac-8104-7e77d217a6c7.png?token=q_ukfoZQ3Ol7Zd1ETbM3mkMCMJXAml7BCV2bwgsdl2o&height=622&width=1200&expires=33291354946">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
   <Navbar />
   <Hero />
   <main
-    class="w-full max-w-4xl mx-auto text-cs-black min-h-screen gap-[80px] my-32 flex flex-col items-center"
+    class="w-full max-w-4xl mx-auto text-cs-black min-h-screen gap-28 lg:mt-28 mb-6 flex flex-col items-center px-4"
   >
     <ShareInfoSection />
     <Talks />
     <TicketAtropo />
     <FrequentQuestions />
     <CTA />
+    <SubscriptionStatus />
     <Footer />
   </main>
 </Layout>

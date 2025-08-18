@@ -1,7 +1,10 @@
+---
+import { contributors } from "../lib/contributors";
+---
+
 <footer class="w-full flex font-medium items-center justify-between">
-  <a href="/" class="font-handlee text-3xl">Aforshow</a>
-  <div class="flex flex-col items-end gap-2">
-    <p>Diseño inspirado en el estilo visual de Notion</p>
+  <section class="flex flex-col gap-2">
+    <a href="/" class="font-handlee text-3xl">Aforshow</a>
     <div class="flex mb-2 gap-1">
       <p>
         Desarrollado por <a
@@ -19,5 +22,57 @@
         class="w-[22px] h-7"
       />
     </div>
-  </div>
+  </section>
+  <section class="flex flex-col items-center gap-2">
+    <div class="flex gap-2">
+      {
+        contributors
+          .filter((_, index) => {
+            return index < 4;
+          })
+          .map((contributor) => {
+            return (
+              <a
+                href={contributor.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="relative group"
+              >
+                <img
+                  src={contributor.img}
+                  alt={`Contributor: ${contributor.title || contributor.user}`}
+                  class="w-12 h-12 rounded-full"
+                />
+                <span class="absolute bottom-full mb-1 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  {contributor.title || contributor.user}
+                </span>
+              </a>
+            );
+          })
+      }
+    </div>
+    <div class="flex gap-2">
+      {
+        contributors
+          .filter((_, index) => index >= 4 && index < 8)
+          .map((contributor) => (
+            <a
+              href={contributor.github_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="relative group"
+            >
+              <img
+                src={contributor.img}
+                alt={`Contributor: ${contributor.title || contributor.user}`}
+                class="w-12 h-12 rounded-full"
+              />
+              <span class="absolute bottom-full mb-1 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                {contributor.title || contributor.user}
+              </span>
+            </a>
+          ))
+      }
+    </div>
+  </section>
 </footer>

@@ -10,18 +10,23 @@ const { img, title, author, hour } = Astro.props;
 ---
 
 <li
-  class="flex px-9 py-4 items-center rounded-xl justify-between bg-cs-background"
+  class="flex px-4 gap-4 items-center md:max-lg:items-start py-4 rounded-xl justify-between bg-cs-background"
 >
-  <div class="flex gap-6 items-center">
+  <div class="flex flex-col md:flex-row gap-4 md:items-center">
     <img
+      width="84"
+      height="84"
       src={img}
       alt={`Profile image of the author: ${author}`}
-      class="w-[84px] h-[84px] border border-slate-200 rounded-full object-cover"
+      class="border border-slate-200 rounded-full object-cover"
+      loading="lazy"
+      decoding="async"
+      fetchpriority="low"
     />
     <div class="flex flex-col gap-1">
       <h2 class="font-semibold">{title}</h2>
       <p class="font-medium text-sm">{author}</p>
     </div>
   </div>
-  <p class="font-handlee text-lg">{hour}</p>
+  <p class="font-handlee text-lg translate-y-4 md:translate-y-1.5 xl:translate-y-0">{hour}</p>
 </li>

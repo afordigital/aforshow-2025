@@ -12,10 +12,15 @@ const { img, title } = Astro.props;
   class="w-full flex flex-col items-center p-4 justify-center h-[120px] bg-cs-background rounded-md gap-1"
 >
   <img
+    width="64"
+    height="64"
     src={img}
     aria-hidden="true"
     alt={title}
-    class="w-[64px] h-[64px] object-cover"
+    class="object-cover"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
   />
-  <h2 class="text-center font-semibold">{title}</h2>
+  <h2 class="text-center font-semibold whitespace-nowrap">{title}</h2>
 </li>
