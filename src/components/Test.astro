@@ -1,0 +1,15 @@
+---
+
+---
+
+<div>Hola</div>
+
+<script>
+  import { client } from "https://unpkg.com/mtmi@0.0.6/dist/mtmi.js";
+
+  client.connect({ channels: ["afor_digital"] });
+
+  client.on("message", ({ username, channel, message }) => {
+    console.log(`${channel} [${username}]: ${message}`);
+  });
+</script>

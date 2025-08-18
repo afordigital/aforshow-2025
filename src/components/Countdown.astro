@@ -1,113 +1,107 @@
 ---
 interface Props {
-    class?: string;
+  class?: string;
 }
 
 interface Unit {
-    key: "Day" | "Hour" | "Minute" | "Second";
-    label: string;
+  key: "Day" | "Hour" | "Minute" | "Second";
+  label: string;
 }
 
 const { class: className } = Astro.props;
 
 const units: Unit[] = [
-    { key: "Day", label: "Días" },
-    { key: "Hour", label: "Horas" },
-    { key: "Minute", label: "Minutos" },
-    { key: "Second", label: "Segundos" },
+  { key: "Day", label: "Días" },
+  { key: "Hour", label: "Horas" },
+  { key: "Minute", label: "Minutos" },
+  { key: "Second", label: "Segundos" },
 ];
 ---
 
 <section
-    class={`flex flex-col gap-4 items-center mt-10 mb-5 ${className || ""}`}
-    style="--stagger:4"
+  class={`flex flex-col gap-4 items-center mb-5 ${className || ""}`}
+  style="--stagger:4"
 >
-    <div
-        class="flex gap-4 md:gap-6 items-center justify-center w-full max-w-2xl"
-    >
-        {
-            units.map(({ key, label }) => (
-                <div class="flex flex-col items-center">
-                    <div class="rounded-lg px-3 md:px-4 min-w-[60px] md:min-w-[80px]">
-                        <span
-                            class="countdown-number block text-hero-title font-bold text-cs-black text-center tabular-nums"
-                            data-unit={key}
-                        >
-                            00
-                        </span>
-                    </div>
-                    <span class="text-hero-subtitle font-medium text-cs-black/70 font-handlee text-center">
-                        {label}
-                    </span>
-                </div>
-            ))
-        }
-    </div>
+  <div class="flex gap-4 md:gap-6 items-center justify-center w-full max-w-2xl">
+    {
+      units.map(({ key, label }) => (
+        <div class="flex flex-col items-center">
+          <div class="rounded-lg px-3 md:px-4 min-w-[60px] md:min-w-[80px]">
+            <span
+              class="countdown-number block text-hero-title font-bold text-cs-black text-center tabular-nums"
+              data-unit={key}
+            >
+              00
+            </span>
+          </div>
+          <span class="text-hero-subtitle font-medium text-cs-black/70 font-handlee text-center">
+            {label}
+          </span>
+        </div>
+      ))
+    }
+  </div>
 </section>
 
 <script>
-    type UnitKey = "Day" | "Hour" | "Minute" | "Second";
+  type UnitKey = "Day" | "Hour" | "Minute" | "Second";
 
-    const COUNTDOWN_FROM = new Date("2025-09-01T00:00:00").getTime();
-    const TIME_UNITS = {
-        SECOND: 1000,
-        MINUTE: 60000,
-        HOUR: 3600000,
-        DAY: 86400000,
+  const COUNTDOWN_FROM = new Date("2025-09-01T00:00:00").getTime();
+  const TIME_UNITS = {
+    SECOND: 1000,
+    MINUTE: 60000,
+    HOUR: 3600000,
+    DAY: 86400000,
+  };
+
+  const prevValues: Record<UnitKey, number> = {
+    Day: -1,
+    Hour: -1,
+    Minute: -1,
+    Second: -1,
+  };
+
+  function updateCountdown() {
+    const distance = Math.max(0, COUNTDOWN_FROM - Date.now());
+
+    const values: Record<UnitKey, number> = {
+      Day: Math.floor(distance / TIME_UNITS.DAY),
+      Hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
+      Minute: Math.floor((distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE),
+      Second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
     };
 
-    const prevValues: Record<UnitKey, number> = {
-        Day: -1,
-        Hour: -1,
-        Minute: -1,
-        Second: -1,
-    };
+    document
+      .querySelectorAll<HTMLElement>(".countdown-number")
+      .forEach((el) => {
+        const unit = el.dataset.unit as UnitKey;
+        if (!unit) return;
 
-    function updateCountdown() {
-        const distance = Math.max(0, COUNTDOWN_FROM - Date.now());
+        const newValue =
+          unit === "Second"
+            ? String(values[unit]).padStart(2, "0")
+            : String(values[unit]);
 
-        const values: Record<UnitKey, number> = {
-            Day: Math.floor(distance / TIME_UNITS.DAY),
-            Hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
-            Minute: Math.floor(
-                (distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE,
-            ),
-            Second: Math.floor(
-                (distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND,
-            ),
-        };
+        if (prevValues[unit] !== values[unit]) {
+          prevValues[unit] = values[unit];
 
-        document
-            .querySelectorAll<HTMLElement>(".countdown-number")
-            .forEach((el) => {
-                const unit = el.dataset.unit as UnitKey;
-                if (!unit) return;
+          el.style.cssText =
+            "transition: transform 0.35s, opacity 0.35s; transform: translateY(-50%); opacity: 0";
 
-                const newValue =
-                    unit === "Second"
-                        ? String(values[unit]).padStart(2, "0")
-                        : String(values[unit]);
+          setTimeout(() => {
+            el.textContent = newValue;
+            el.style.transform = "translateY(50%)";
+            el.style.opacity = "0";
 
-                if (prevValues[unit] !== values[unit]) {
-                    prevValues[unit] = values[unit];
+            setTimeout(() => {
+              el.style.cssText =
+                "transition: transform 0.35s, opacity 0.35s; transform: translateY(0%); opacity: 1";
+            }, 50);
+          }, 350);
+        }
+      });
+  }
 
-                    el.style.cssText =
-                        "transition: transform 0.35s, opacity 0.35s; transform: translateY(-50%); opacity: 0";
-
-                    setTimeout(() => {
-                        el.textContent = newValue;
-                        el.style.transform = "translateY(50%)";
-                        el.style.opacity = "0";
-
-                        setTimeout(() => {
-                            el.style.cssText =
-                                "transition: transform 0.35s, opacity 0.35s; transform: translateY(0%); opacity: 1";
-                        }, 50);
-                    }, 350);
-                }
-            });
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
