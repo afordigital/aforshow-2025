@@ -7,6 +7,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  server: {
+    allowedHosts: ["hello-dont-questionnaire-electric.trycloudflare.com"],
+  },
 
   output: 'server',
   adapter: netlify()

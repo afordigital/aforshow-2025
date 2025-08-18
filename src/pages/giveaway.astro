@@ -1,13 +1,138 @@
 ---
-import Test from "@/components/Test.astro";
+import Link from "@/components/common/Link.astro";
+import "../styles/tailwind.css";
 ---
 
 <html lang="es">
   <head>
     <title>Sorteo del AforShow 2025</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
   </head>
-  <body>
-    <h1>Este es el sorteo</h1>
-    <Test />
+  <body class="max-w-4xl mx-auto flex flex-col gap-16 py-16">
+    <header class="w-full flex items-center justify-between">
+      <h1 class="font-handlee">Aforshow 2025</h1>
+      <Link href="https://discord.com/invite/comuafor" variant="primary"
+        >Únete a la comunidad</Link
+      >
+    </header>
+    <section class="w-full justify-center text-center flex flex-col gap-4">
+      <h1 class="font-handlee text-6xl">Sorteo pack afordin</h1>
+      <p>
+        Escribe <strong>!piticlin</strong> en el chat para entrar en el sorteo
+      </p>
+      <div class="w-full flex items-stretch gap-4">
+        <label
+          for="cap"
+          class="bg-slate-50 flex h-full flex-1 flex-col items-center gap-2 w-full py-4"
+        >
+          <img
+            src="/imgs/cap.webp"
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            alt="Gorra Afordin"
+            width="78"
+            height="78"
+          />
+          <input
+            type="radio"
+            class="hidden"
+            id="cap"
+            name="radio"
+            value="cap"
+          />
+          <p>Gorra Afordin</p>
+        </label>
+
+        <label
+          for="shirt"
+          class="bg-slate-50 flex flex-col flex-1 h-full items-center gap-2 w-full py-4"
+        >
+          <img
+            src="/imgs/shirt.webp"
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            alt="Gorra Afordin"
+            width="78"
+            height="78"
+          />
+          <input
+            type="radio"
+            class="hidden"
+            id="shirt"
+            name="radio"
+            value="shirt"
+          />
+          <p>Camiseta Afordin</p>
+        </label>
+
+        <label
+          for="pack"
+          class="bg-slate-50 flex flex-col items-center gap-2 w-full py-4"
+        >
+          <img
+            src="/imgs/pack-afordin.webp"
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            alt="Gorra Afordin"
+            width="78"
+            height="78"
+          />
+          <input
+            type="radio"
+            class="hidden"
+            id="shirt"
+            name="radio"
+            value="shirt"
+          />
+          <p>Pack Gorra + Camiseta Afordin</p>
+        </label>
+      </div>
+    </section>
+
+    <ul class="list-users"></ul>
   </body>
 </html>
+
+<script>
+  import { client } from "mtmi";
+
+  client.connect({ channels: ["afor_digital"] });
+
+  const users: string[] = [];
+  const listUsers = document.querySelector(".list-users");
+
+  client.on(
+    "message",
+    ({
+      username,
+      channel,
+      message,
+    }: {
+      username: string;
+      channel: string;
+      message: string;
+    }) => {
+      console.log(`${channel} [${username}]: ${message}`);
+
+      if (
+        message.trim().toLowerCase() == "!piticlin" &&
+        !users.includes(username)
+      ) {
+        users.push(username);
+
+        const newUser = document.createElement("li");
+        newUser.textContent = `${username}`;
+        listUsers?.appendChild(newUser);
+      }
+
+      console.log(users);
+    }
+  );
+</script>
+
+<style></style>
