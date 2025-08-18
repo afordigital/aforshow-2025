@@ -1,6 +1,7 @@
 ---
 import Link from "@/components/common/Link.astro";
 import "../styles/tailwind.css";
+import Aptabase from "../components/Aptabase.astro";
 ---
 
 <html lang="es">
@@ -22,10 +23,10 @@ import "../styles/tailwind.css";
       <p>
         Escribe <strong>!piticlin</strong> en el chat para entrar en el sorteo
       </p>
-      <div class="w-full flex items-stretch gap-4">
+      <div class="w-full grid grid-cols-3 gap-4">
         <label
           for="cap"
-          class="bg-slate-50 flex h-full flex-1 flex-col items-center gap-2 w-full py-4"
+          class="bg-slate-50 has-checked:outline-2 rounded-lg has-checked:outline-cs-primary flex h-full flex-col items-center justify-center gap-2 w-full py-4"
         >
           <img
             src="/imgs/cap.webp"
@@ -42,13 +43,14 @@ import "../styles/tailwind.css";
             id="cap"
             name="radio"
             value="cap"
+            checked
           />
           <p>Gorra Afordin</p>
         </label>
 
         <label
           for="shirt"
-          class="bg-slate-50 flex flex-col flex-1 h-full items-center gap-2 w-full py-4"
+          class="bg-slate-50 has-checked:outline-2 rounded-lg has-checked:outline-cs-primary flex h-full flex-col items-center justify-center gap-2 w-full py-4"
         >
           <img
             src="/imgs/shirt.webp"
@@ -71,7 +73,7 @@ import "../styles/tailwind.css";
 
         <label
           for="pack"
-          class="bg-slate-50 flex flex-col items-center gap-2 w-full py-4"
+          class="bg-slate-50 has-checked:outline-2 rounded-lg has-checked:outline-cs-primary flex h-full flex-col items-center justify-center gap-2 w-full py-4"
         >
           <img
             src="/imgs/pack-afordin.webp"
@@ -85,17 +87,31 @@ import "../styles/tailwind.css";
           <input
             type="radio"
             class="hidden"
-            id="shirt"
+            id="pack"
             name="radio"
-            value="shirt"
+            value="pack"
           />
           <p>Pack Gorra + Camiseta Afordin</p>
         </label>
       </div>
     </section>
 
-    <ul class="list-users"></ul>
+    <section class="grid grid-cols-2 gap-4 w-full">
+      <article>
+        <h1 class="font-bold">Participantes</h1>
+        <ul class="gonzaloEsMiPastor"></ul>
+      </article>
+      <article>
+        <p>
+          <span class="timer">30 </span>
+          Segundos
+        </p>
+        <button class="initTimer">¡Iniciar!</button>
+        <button class="resetTimer">¡Resetear!</button>
+      </article>
+    </section>
   </body>
+  <Aptabase />
 </html>
 
 <script>
@@ -104,7 +120,7 @@ import "../styles/tailwind.css";
   client.connect({ channels: ["afor_digital"] });
 
   const users: string[] = [];
-  const listUsers = document.querySelector(".list-users");
+  const listUsers = document.querySelector(".gonzaloEsMiPastor");
 
   client.on(
     "message",
@@ -135,4 +151,38 @@ import "../styles/tailwind.css";
   );
 </script>
 
-<style></style>
+<script>
+  const TIMER_SECONDS = 30;
+  let counter = TIMER_SECONDS;
+  const $timer = document.querySelector(".timer");
+
+  document.querySelector(".initTimer")?.addEventListener("click", () => {
+    startTimer();
+  });
+
+  const startTimer = () => {
+    const interval = setInterval(() => {
+      console.log(counter);
+      counter--;
+
+      if (!$timer) return;
+      $timer.textContent = counter.toString();
+
+      if (counter <= 0) {
+        clearInterval(interval);
+        console.log("Ding!");
+      }
+    }, 1000);
+  };
+
+  document.querySelector(".resetTimer")?.addEventListener("click", () => {
+    resetTimer();
+  });
+
+  const resetTimer = () => {
+    counter = TIMER_SECONDS;
+
+    if (!$timer) return;
+    $timer.textContent = counter.toString();
+  };
+</script>
