@@ -15,7 +15,7 @@ const { class: classname } = Astro.props as Props;
       type="button"
     >
       <Twitch class="pointer-events-none" width={24} height={24} />
-      <span class="pointer-events-none">Iniciar sesión</span>
+      <span class="pointer-events-none">Iniciar sesión con Twitch</span>
     </button>
   </div>
 </div>
@@ -32,13 +32,7 @@ const { class: classname } = Astro.props as Props;
   ) as NodeListOf<HTMLButtonElement>;
 
   async function loginWithTwitch() {
-    await supabase.auth.signInWithOAuth({
-      provider: "twitch",
-      options: {
-        scopes:
-          "user:read:email channel:read:redemptions user:read:subscriptions",
-      },
-    });
+    await supabase.auth.signInWithOAuth({ provider: "twitch" });
   }
 
   $loginTwitchButtons.forEach((button) => {
@@ -91,6 +85,13 @@ const { class: classname } = Astro.props as Props;
     $userContainers.forEach((userContainer) => {
       userContainer.insertAdjacentHTML("beforeend", userTemplate);
       userContainer.querySelector(".logout")?.addEventListener("click", logout);
+    });
+
+    await supabase.from("users").upsert({
+      id: user.id,
+      username: username,
+      name: username,
+      avatar_url,
     });
   }
 </script>
