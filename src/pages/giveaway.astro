@@ -1,17 +1,10 @@
 ---
+import Layout from "@/layouts/Layout.astro";
 import Link from "@/components/common/Link.astro";
-import "../styles/tailwind.css";
-import Aptabase from "../components/Aptabase.astro";
 ---
 
-<html lang="es">
-  <head>
-    <title>Sorteo del AforShow 2025</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-  </head>
-  <body class="max-w-4xl mx-auto flex flex-col gap-16 py-16">
+<Layout>
+  <main class="w-full max-w-4xl mx-auto flex flex-col gap-16 py-16">
     <header class="w-full flex items-center justify-between">
       <h1 class="font-handlee">Aforshow 2025</h1>
       <Link href="https://discord.com/invite/comuafor" variant="primary"
@@ -110,9 +103,8 @@ import Aptabase from "../components/Aptabase.astro";
         <button class="resetTimer">¡Resetear!</button>
       </article>
     </section>
-  </body>
-  <Aptabase />
-</html>
+  </main>
+</Layout>
 
 <script>
   import { client } from "mtmi";
