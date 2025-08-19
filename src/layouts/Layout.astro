@@ -2,6 +2,7 @@
 import "../styles/tailwind.css";
 import "atropos/css";
 import Aptabase from "../components/Aptabase.astro";
+import OpenGraph from "@components/OpenGraph.astro";
 ---
 
 <!doctype html>
@@ -9,9 +10,11 @@ import Aptabase from "../components/Aptabase.astro";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <title>Aforshow 2025</title>
+    <meta name="description" content="Aforshow es un evento de programación creado por y para desarrolladores, donde puedes demostrar tu talento participando y exponiendo una charla.">
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>Aforshow 2025</title>
+    <OpenGraph />
   </head>
   <body class="font-inter">
     <slot />
