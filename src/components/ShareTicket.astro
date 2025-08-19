@@ -200,6 +200,7 @@ const {
 
     if (!user?.user) return;
 
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     const userName = user.user.user_metadata.name.split("#")[0];
     const shareUrl = `${siteUrl}ticket/${userName}`;
 
@@ -254,95 +255,109 @@ const {
       }
     }
 
-    function openModal() {
-      $modalOverlay?.classList.add("show");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal() {
-      $modalOverlay?.classList.remove("show");
-      document.body.style.overflow = "auto";
-    }
-
-    async function copyToClipboard(text: string) {
-      try {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } catch {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
+    if (isMobile) {
+      $openModal?.addEventListener("click", async () => {
         try {
-          document.execCommand("copy");
-          document.body.removeChild(textArea);
+          await navigator.share({
+            title: "Aforshow 2025",
+            text: `${caption} ${window.location.origin}/${shareUrl}`
+          });
+        } catch (error) {
+          showToast("Error al compartir.");
+          console.error("Error:", error);
+        }
+      });
+    } else {
+      function openModal() {
+        $modalOverlay?.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        $modalOverlay?.classList.remove("show");
+        document.body.style.overflow = "auto";
+      }
+
+      async function copyToClipboard(text: string) {
+        try {
+          await navigator.clipboard.writeText(text);
           return true;
         } catch {
-          document.body.removeChild(textArea);
-          return false;
-        }
-      }
-    }
-
-    $openModal?.addEventListener("click", openModal);
-    $closeModal?.addEventListener("click", closeModal);
-
-    $modalOverlay?.addEventListener("click", (e) => {
-      if (e.target === $modalOverlay) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && $modalOverlay?.classList.contains("show")) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener("click", async (e) => {
-      const target = e.target as HTMLElement;
-      const button = target.closest(".share-btn") as HTMLButtonElement;
-
-      if (!button) return;
-
-      const platform = button.dataset.platform as keyof typeof shareConfigs;
-      const config = shareConfigs[platform];
-
-      if (!config) return;
-
-      e.preventDefault();
-
-      if (config.action === "copy") {
-        const textToCopy =
-          platform === "instagram" ? `${caption} ${shareUrl}` : shareUrl;
-
-        const success = await copyToClipboard(textToCopy);
-        if (success) {
-          showToast(config.message || "¡Enlace copiado!");
-          closeModal();
-        } else {
-          showToast("Error al copiar el enlace");
-        }
-      } else if (config.url) {
-        if (config.popup) {
-          const popup = window.open(
-            config.url,
-            "share",
-            "width=600,height=400,scrollbars=yes,resizable=yes"
-          );
-
-          if (popup) {
-            popup.focus();
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.opacity = "0";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            return true;
+          } catch {
+            document.body.removeChild(textArea);
+            return false;
           }
-        } else {
-          window.open(config.url, "_blank");
         }
-        closeModal();
       }
-    });
+
+      $openModal?.addEventListener("click", openModal);
+      $closeModal?.addEventListener("click", closeModal);
+
+      $modalOverlay?.addEventListener("click", (e) => {
+        if (e.target === $modalOverlay) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && $modalOverlay?.classList.contains("show")) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("click", async (e) => {
+        const target = e.target as HTMLElement;
+        const button = target.closest(".share-btn") as HTMLButtonElement;
+
+        if (!button) return;
+
+        const platform = button.dataset.platform as keyof typeof shareConfigs;
+        const config = shareConfigs[platform];
+
+        if (!config) return;
+
+        e.preventDefault();
+
+        if (config.action === "copy") {
+          const textToCopy =
+            platform === "instagram" ? `${caption} ${shareUrl}` : shareUrl;
+
+          const success = await copyToClipboard(textToCopy);
+          if (success) {
+            showToast(config.message || "¡Enlace copiado!");
+            closeModal();
+          } else {
+            showToast("Error al copiar el enlace");
+          }
+        } else if (config.url) {
+          if (config.popup) {
+            const popup = window.open(
+              config.url,
+              "share",
+              "width=600,height=400,scrollbars=yes,resizable=yes"
+            );
+
+            if (popup) {
+              popup.focus();
+            }
+          } else {
+            window.open(config.url, "_blank");
+          }
+          closeModal();
+        }
+      });
+    }
   });
 </script>
 
