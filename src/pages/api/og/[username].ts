@@ -11,12 +11,31 @@ const handleeRegular = await fs.readFile(
   path.resolve("./public/fonts/Handlee-Regular.ttf"),
 );
 
-const supabaseAdmin = createClient(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.SUPABASE_SERVICE_KEY,
-);
+const supabaseURL = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_KEY;
 
 export const GET: APIRoute = async ({ params, request }) => {
+  if (!supabaseServiceKey) {
+    const imagePath = path.join(
+      process.cwd(),
+      "public",
+      "/imgs/afor_digital.png",
+    );
+    try {
+      const imageBuffer = await fs.readFile(imagePath);
+      return new Response(imageBuffer as any, {
+        status: 200,
+        headers: {
+          "Content-Type": "image/png",
+          "Cache-Control": "public, max-age=3600",
+        },
+      });
+    } catch (error) {
+      return new Response("Imagen no encontrada", { status: 404 });
+    }
+  }
+
+  const supabaseAdmin = createClient(supabaseURL, supabaseServiceKey);
   const username = params.username;
 
   const { data: user, error } = await supabaseAdmin
