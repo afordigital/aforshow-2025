@@ -3,9 +3,8 @@ const siteUrl = Astro.site;
 ---
 
 <div>
-  <img id="ticket-image" alt="ticket image" />
+  <img id="ticket-image" class="aspect-[666/332]" width="666" height="332" alt="ticket image" loading="lazy" decoding="async" fetchpriority="low" />
   <span class="sr-only" data-site-url={siteUrl}></span>
-  <div>Hola</div>
 </div>
 
 <script>
