@@ -1,24 +1,5 @@
----
-const appKey = "A-SH-3887203412";
-const host = "https://aptabase.dokploy.dev";
-const devMode = import.meta.env.DEV;
----
-
-<div
-  id="aptabase-tracker"
-  data-app-key={appKey}
-  data-host={host}
-  data-dev-mode={devMode.toString()}
-  style="display: none;"
->
-</div>
-
 <script>
-  const trackerElement = document.getElementById("aptabase-tracker");
-  const appKey = trackerElement?.dataset.appKey;
-  const host = trackerElement?.dataset.host;
-  const devMode = trackerElement?.dataset.devMode === "true";
-  const API_URL = `${host}/api/v0/events`;
+  import { sendEvent } from "../lib/analytics";
 
   function newSessionId() {
     const epochSec = Math.floor(Date.now() / 1000);
@@ -29,51 +10,28 @@ const devMode = import.meta.env.DEV;
   }
   const sessionId = newSessionId();
 
-  async function sendEvent(eventName: string, props = {}) {
-    if (!appKey || !host) {
-      console.error("Aptabase appKey or host is not configured.");
-      return;
-    }
-    const eventPayload = [
-      {
-        timestamp: new Date().toISOString(),
-        sessionId,
-        eventName,
-        systemProps: {
-          locale: navigator.language,
-          osName: (navigator as any).userAgentData?.platform || "unknown",
-          isDebug: devMode,
-          appVersion: "1.0.0",
-          sdkVersion: "astro-sdk@1.0.0",
-        },
-        props,
-      },
-    ];
-
-    try {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "App-Key": appKey,
-        },
-        credentials: "omit",
-        body: JSON.stringify(eventPayload),
-      });
-    } catch (err) {
-      console.error("Error sending event to Aptabase", err);
-    }
-  }
-
+  let lastPath: string | null = null;
   async function onRouteChange() {
-    sendEvent("page_changed", {
-      path: window.location.pathname + window.location.search,
+    const currentPathname = window.location.pathname;
+    const currentSearch = window.location.search;
+    const currentHash = window.location.hash;
+
+    const fullPath = currentPathname + currentSearch + currentHash;
+
+    if (lastPath === fullPath) return; // duplicate path
+
+    lastPath = fullPath;
+
+    sendEvent("page_changed", sessionId, {
+      path: currentPathname + currentSearch,
+      ...(currentHash && { hash: currentHash }),
     });
   }
 
   onRouteChange();
 
   window.addEventListener("popstate", onRouteChange);
+  window.addEventListener("hashchange", onRouteChange, { passive: true });
 
   const _push = history.pushState;
   history.pushState = function (...args) {
