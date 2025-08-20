@@ -4,17 +4,17 @@ interface Props {
 }
 
 interface Unit {
-  key: "Day" | "Hour" | "Minute" | "Second";
+  key: "day" | "hour" | "minute" | "second";
   label: string;
 }
 
 const { class: className } = Astro.props;
 
 const units: Unit[] = [
-  { key: "Day", label: "Días" },
-  { key: "Hour", label: "Horas" },
-  { key: "Minute", label: "Minutos" },
-  { key: "Second", label: "Segundos" },
+  { key: "day", label: "Días" },
+  { key: "hour", label: "Horas" },
+  { key: "minute", label: "Minutos" },
+  { key: "second", label: "Segundos" },
 ];
 ---
 
@@ -44,7 +44,7 @@ const units: Unit[] = [
 </section>
 
 <script>
-  type UnitKey = "Day" | "Hour" | "Minute" | "Second";
+  type UnitKey = "day" | "hour" | "minute" | "second";
 
   const COUNTDOWN_FROM = new Date("2025-09-01T00:00:00").getTime();
   const TIME_UNITS = {
@@ -55,20 +55,20 @@ const units: Unit[] = [
   };
 
   const prevValues: Record<UnitKey, number> = {
-    Day: -1,
-    Hour: -1,
-    Minute: -1,
-    Second: -1,
+    day: -1,
+    hour: -1,
+    minute: -1,
+    second: -1,
   };
 
   function updateCountdown() {
     const distance = Math.max(0, COUNTDOWN_FROM - Date.now());
 
     const values: Record<UnitKey, number> = {
-      Day: Math.floor(distance / TIME_UNITS.DAY),
-      Hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
-      Minute: Math.floor((distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE),
-      Second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
+      day: Math.floor(distance / TIME_UNITS.DAY),
+      hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
+      minute: Math.floor((distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE),
+      second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
     };
 
     document
@@ -78,7 +78,7 @@ const units: Unit[] = [
         if (!unit) return;
 
         const newValue =
-          unit === "Second"
+          unit === "second"
             ? String(values[unit]).padStart(2, "0")
             : String(values[unit]);
 
