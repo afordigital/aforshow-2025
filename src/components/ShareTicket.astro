@@ -260,7 +260,7 @@ const {
         try {
           await navigator.share({
             title: "Aforshow 2025",
-            text: `${caption} ${window.location.origin}/${shareUrl}`
+            text: `${caption} ${shareUrl}`
           });
         } catch (error) {
           showToast("Error al compartir.");
