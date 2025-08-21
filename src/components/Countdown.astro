@@ -1,20 +1,22 @@
 ---
+import '@styles/countdown.css';
+
 interface Props {
   class?: string;
 }
 
 interface Unit {
-  key: "Day" | "Hour" | "Minute" | "Second";
+  key: "day" | "hour" | "minute" | "second";
   label: string;
 }
 
 const { class: className } = Astro.props;
 
 const units: Unit[] = [
-  { key: "Day", label: "Días" },
-  { key: "Hour", label: "Horas" },
-  { key: "Minute", label: "Minutos" },
-  { key: "Second", label: "Segundos" },
+  { key: "day", label: "Días" },
+  { key: "hour", label: "Horas" },
+  { key: "minute", label: "Minutos" },
+  { key: "second", label: "Segundos" },
 ];
 ---
 
@@ -44,7 +46,8 @@ const units: Unit[] = [
 </section>
 
 <script>
-  type UnitKey = "Day" | "Hour" | "Minute" | "Second";
+  type UnitKey = "day" | "hour" | "minute" | "second";
+  type CountdownValues = Record<UnitKey, number>;
 
   const COUNTDOWN_FROM = new Date("2025-09-01T00:00:00").getTime();
   const TIME_UNITS = {
@@ -54,52 +57,53 @@ const units: Unit[] = [
     DAY: 86400000,
   };
 
-  const prevValues: Record<UnitKey, number> = {
-    Day: -1,
-    Hour: -1,
-    Minute: -1,
-    Second: -1,
-  };
+  function getUnitValue(unit: string, values: CountdownValues): string {
+    return String(values[unit as UnitKey]).padStart(2, "0");
+  }
 
-  function updateCountdown() {
+  function processNumbers(
+    $numbers: NodeListOf<HTMLElement>,
+    values: CountdownValues,
+    opts?: { setTransition?: boolean; updateText?: boolean; clearTransition?: boolean }
+  ): void {
+    $numbers.forEach((el) => {
+      const unit = el.dataset.unit ?? "";
+      const newValue = getUnitValue(unit, values);
+
+      if (opts?.setTransition) {
+        el.style.viewTransitionName = (el.textContent === newValue) ? "none" : "";
+      }
+      if (opts?.updateText && el.textContent !== newValue) {
+        el.textContent = newValue;
+      }
+      if (opts?.clearTransition) {
+        el.style.viewTransitionName = "";
+      }
+    });
+  }
+
+  function updateCountdown(): void {
     const distance = Math.max(0, COUNTDOWN_FROM - Date.now());
-
-    const values: Record<UnitKey, number> = {
-      Day: Math.floor(distance / TIME_UNITS.DAY),
-      Hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
-      Minute: Math.floor((distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE),
-      Second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
+    const values: CountdownValues = {
+      day: Math.floor(distance / TIME_UNITS.DAY),
+      hour: Math.floor((distance % TIME_UNITS.DAY) / TIME_UNITS.HOUR),
+      minute: Math.floor((distance % TIME_UNITS.HOUR) / TIME_UNITS.MINUTE),
+      second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
     };
 
-    document
-      .querySelectorAll<HTMLElement>(".countdown-number")
-      .forEach((el) => {
-        const unit = el.dataset.unit as UnitKey;
-        if (!unit) return;
+    const $numbers = document.querySelectorAll<HTMLElement>(".countdown-number");
 
-        const newValue =
-          unit === "Second"
-            ? String(values[unit]).padStart(2, "0")
-            : String(values[unit]);
+    if (document.startViewTransition) {
+      processNumbers($numbers, values, { setTransition: true });
 
-        if (prevValues[unit] !== values[unit]) {
-          prevValues[unit] = values[unit];
-
-          el.style.cssText =
-            "transition: transform 0.35s, opacity 0.35s; transform: translateY(-50%); opacity: 0";
-
-          setTimeout(() => {
-            el.textContent = newValue;
-            el.style.transform = "translateY(50%)";
-            el.style.opacity = "0";
-
-            setTimeout(() => {
-              el.style.cssText =
-                "transition: transform 0.35s, opacity 0.35s; transform: translateY(0%); opacity: 1";
-            }, 50);
-          }, 350);
-        }
+      document.startViewTransition(() => {
+        processNumbers($numbers, values, { updateText: true });
+      }).finished.then(() => {
+        processNumbers($numbers, values, { clearTransition: true });
       });
+    } else {
+      processNumbers($numbers, values, { updateText: true, clearTransition: true });
+    }
   }
 
   updateCountdown();
