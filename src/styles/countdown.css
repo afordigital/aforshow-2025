@@ -62,3 +62,7 @@ html {
 ::view-transition {
   pointer-events: none;
 }
+
+:has(dialog[open])::view-transition {
+  display: none;
+}
