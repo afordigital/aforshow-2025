@@ -1,12 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Link from "@/components/common/Link.astro";
+import Button from "@/components/common/Button.astro";
+import Footer from "@/components/Footer.astro";
 ---
 
 <Layout>
   <main class="w-full max-w-4xl mx-auto flex flex-col gap-16 py-16">
     <header class="w-full flex items-center justify-between">
-      <h1 class="font-handlee">Aforshow 2025</h1>
+      <h1 class="font-handlee text-3xl">Aforshow 2025</h1>
       <Link href="https://discord.com/invite/comuafor" variant="primary"
         >Únete a la comunidad</Link
       >
@@ -89,22 +91,49 @@ import Link from "@/components/common/Link.astro";
       </div>
     </section>
 
-    <section class="grid grid-cols-2 gap-4 w-full">
-      <article>
-        <h1 class="font-bold">Participantes</h1>
-        <ul class="gonzaloEsMiPastor"></ul>
+    <section class="grid grid-cols-2 min-h-[520px] h-[520px] gap-4 w-full">
+      <article
+        class="h-full rounded-lg bg-cs-background flex flex-col gap-6 items-center py-8"
+      >
+        <h1 class="font-bold text-xl">Participantes</h1>
+        <ul class="gonzaloEsMiPastor flex flex-col items-center gap-4"></ul>
       </article>
-      <article>
-        <p>
-          <span class="timer">30 </span>
-          Segundos
-        </p>
-        <button class="initTimer">¡Iniciar!</button>
-        <button class="resetTimer">¡Resetear!</button>
+      <article class="h-full flex flex-col gap-6 items-center justify-center">
+        <div class="flex flex-col items-center gap-4">
+          <p class="timer leading-16 font-black text-[110px]">30</p>
+          <p class="text-4xl font-handlee">segundos</p>
+        </div>
+        <div class="flex gap-2">
+          <Button id="initTimer">¡Iniciar!</Button>
+          <Button id="stopTimer">¡Parar!</Button>
+          <Button id="resetTimer">¡Resetear!</Button>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid grid-cols-3 gap-2.5 w-full">
+      <article
+        class="flex flex-col gap-4 rounded-lg bg-cs-background px-4 py-8 items-center justify-center"
+      >
+        <p class="font-semibold leading-5 text-4xl">x2</p>
+        <p class="font-handlee text-2xl">suscriptores tier 1</p>
+      </article>
+      <article
+        class="flex flex-col gap-4 rounded-lg bg-cs-background px-4 py-8 items-center justify-center"
+      >
+        <p class="font-semibold leading-5 text-4xl">x3</p>
+        <p class="font-handlee text-2xl">suscriptores tier 2</p>
+      </article>
+      <article
+        class="flex flex-col gap-4 rounded-lg bg-cs-background px-4 py-8 items-center justify-center"
+      >
+        <p class="font-semibold leading-5 text-4xl">x4</p>
+        <p class="font-handlee text-2xl">suscriptores tier 3</p>
       </article>
     </section>
   </main>
 </Layout>
+<Footer />
 
 <script>
   import { client } from "mtmi";
@@ -116,17 +145,7 @@ import Link from "@/components/common/Link.astro";
 
   client.on(
     "message",
-    ({
-      username,
-      channel,
-      message,
-    }: {
-      username: string;
-      channel: string;
-      message: string;
-    }) => {
-      console.log(`${channel} [${username}]: ${message}`);
-
+    ({ username, message }: { username: string; message: string }) => {
       if (
         message.trim().toLowerCase() == "!piticlin" &&
         !users.includes(username)
@@ -137,10 +156,69 @@ import Link from "@/components/common/Link.astro";
         newUser.textContent = `${username}`;
         listUsers?.appendChild(newUser);
       }
-
-      console.log(users);
     }
   );
+
+  type SubPlanType = {
+    planName: string;
+    plan: string;
+    isPrime: boolean;
+    isTier1: boolean;
+    isTier2: boolean;
+    isTier3: boolean;
+  };
+
+  type GiftInfoType = {
+    giftMonths: number;
+    months: number;
+    originId: string;
+    isAnonymous: boolean;
+    gifterUserName: string;
+    gifterDisplayName: string;
+    recipientDisplayName: string;
+    recipientId: number;
+    recipientUserName: string;
+    subPlan: SubPlanType;
+    systemMsg: string;
+    senderCount?: number;
+    funString?: string;
+    goalInfo?: GoalGroupType;
+  };
+
+  interface MysteryGiftInfoType {
+    massGiftCount: number;
+    originId: string;
+    isAnonymous: boolean;
+    senderUsername: string;
+    subPlan: string;
+    systemMsg: string;
+    senderCount?: number;
+  }
+
+  // client.on("subgift", (data: GiftInfoType) => {
+  //   const { gifterUserName, senderCount } = data;
+  //   console.log("gifterUserName", gifterUserName);
+  //   console.log("senderCount", senderCount);
+  // });
+
+  const handleSubscription = (data: GiftInfoType | MysteryGiftInfoType) => {};
+
+  client.on("subgift", handleSubscription);
+  client.on("submysterygift", handleSubscription);
+
+  // client.on(
+  //   "submysterygift",
+  //   ({
+  //     gifterUserName,
+  //     senderCount,
+  //   }: {
+  //     gifterUserName: string;
+  //     senderCount: number;
+  //   }) => {
+  //     console.log("gifterUserName", gifterUserName);
+  //     console.log("senderCount", senderCount);
+  //   }
+  // );
 </script>
 
 <script>
@@ -148,15 +226,26 @@ import Link from "@/components/common/Link.astro";
   let counter = TIMER_SECONDS;
   const $timer = document.querySelector(".timer");
 
-  document.querySelector(".initTimer")?.addEventListener("click", () => {
+  const $stopTimer = document.querySelector("#stopTimer") as HTMLElement;
+  const $initTimer = document.querySelector("#initTimer") as HTMLElement;
+
+  $stopTimer.style.display = "none";
+
+  $initTimer?.addEventListener("click", () => {
     startTimer();
+  });
+
+  $stopTimer?.addEventListener("click", () => {
+    stopTimer();
   });
 
   let interval: ReturnType<typeof setInterval>;
 
   const startTimer = () => {
+    $initTimer.style.display = "none";
+    $stopTimer.style.display = "flex";
+
     interval = setInterval(() => {
-      console.log(counter);
       counter--;
 
       if (!$timer) return;
@@ -164,12 +253,17 @@ import Link from "@/components/common/Link.astro";
 
       if (counter <= 0) {
         clearInterval(interval);
-        console.log("Ding!");
       }
     }, 1000);
   };
 
-  document.querySelector(".resetTimer")?.addEventListener("click", () => {
+  const stopTimer = () => {
+    $stopTimer.style.display = "none";
+    $initTimer.style.display = "flex";
+    clearInterval(interval);
+  };
+
+  document.querySelector("#resetTimer")?.addEventListener("click", () => {
     resetTimer();
   });
 

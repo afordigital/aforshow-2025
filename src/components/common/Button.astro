@@ -1,0 +1,13 @@
+---
+type Props = {
+  id?: string;
+};
+
+const { id } = Astro.props;
+---
+
+<button
+  id={id}
+  class="py-2 rounded-md text-base font-medium bg-gradient-to-b from-cs-primary to-cs-secondary text-white px-5 hover:bg-gradient-to-b hover:from-cs-primary-hover hover:to-cs-secondary-hover"
+  ><slot /></button
+>

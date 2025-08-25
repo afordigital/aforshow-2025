@@ -8,7 +8,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const handleeRegular = await fs.readFile(
-  path.resolve("./public/fonts/Handlee-Regular.ttf"),
+  path.resolve("./public/fonts/Handlee-Regular.ttf")
 );
 
 const supabaseURL = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ params, request }) => {
     const imagePath = path.join(
       process.cwd(),
       "public",
-      "/imgs/afor_digital.png",
+      "/imgs/afor_digital.png"
     );
     try {
       const imageBuffer = await fs.readFile(imagePath);
@@ -68,7 +68,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   `;
 
   const svgBackground = `url('data:image/svg+xml;base64,${Buffer.from(
-    svgBorder,
+    svgBorder
   ).toString("base64")}')`;
 
   const starSvg = `
@@ -76,9 +76,9 @@ export const GET: APIRoute = async ({ params, request }) => {
       <path d="M23.5 46.2861C23.5 40.1862 21.0768 34.336 16.7635 30.0227C12.4501 25.7093 6.59998 23.2861 0.5 23.2861C6.59998 23.2861 12.4501 20.8629 16.7635 16.5496C21.0768 12.2363 23.5 6.38611 23.5 0.286133C23.5 6.38611 25.9232 12.2363 30.2365 16.5496C34.5499 20.8629 40.4 23.2861 46.5 23.2861C40.4 23.2861 34.5499 25.7093 30.2365 30.0227C25.9232 34.336 23.5 40.1862 23.5 46.2861Z" fill="url(#paint0_linear_775_169)"/>
       <defs>
         <linearGradient id="paint0_linear_775_169" x1="0.54294" y1="0.28613" x2="46.5429" y2="46.2861" gradientUnits="userSpaceOnUse">
-        <stop offset="0.285339" stop-color="#FCAC5E"/>
-        <stop offset="0.527327" stop-color="#C779D0"/>
-        <stop offset="0.812053" stop-color="#4BC0C8"/>
+        <stop offset="0.285339" stop-color="#F43E71"/>
+        <stop offset="0.527327" stop-color="#F43E71"/>
+        <stop offset="0.812053" stop-color="#F43E71"/>
         </linearGradient>
       </defs>
     </svg>
@@ -90,11 +90,16 @@ export const GET: APIRoute = async ({ params, request }) => {
     </svg>
   `;
 
-  const starBackground = `url('data:image/svg+xml;base64,${Buffer.from(starSvg).toString("base64")}')`;
-  const borderImageBackground = `url('data:image/svg+xml;base64,${Buffer.from(borderImageSvg).toString("base64")}')`;
+  const starBackground = `url('data:image/svg+xml;base64,${Buffer.from(
+    starSvg
+  ).toString("base64")}')`;
+  const borderImageBackground = `url('data:image/svg+xml;base64,${Buffer.from(
+    borderImageSvg
+  ).toString("base64")}')`;
 
-  const month = "SEPT";
-  const day = 20;
+  const month = "Oct";
+  const day = 3;
+  const amorPorDonaldTrump = "💩";
 
   // 1. Define tu HTML como un string. Puedes usar estilos en línea.
   const htmlTemplate = `
@@ -113,21 +118,31 @@ export const GET: APIRoute = async ({ params, request }) => {
                 <h4 style="font-size: 2.3rem; margin: 0; color: #1E1E1E; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
                   ${user.name}
                 </h4>
-                <p style="font-size: 1rem; margin: 4px 0 0;">Ticket #${user.id}</p>
               </div>
             </div>
 
-            <div style="margin-top: 20px; display: flex; flex-direction: column;">
-              <div style="font-size: 3.5rem; font-weight: 400; color: #1E1E1E; line-height: 0.9; margin: 0;">
-                ${month}
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap:1rem;">
+              <div style="font-size: 1rem; font-weight: 400; color: #1E1E1E; line-height: 0.9; margin: 0;">
+                ${day} ${month}. 2025 · 20.00h
               </div>
-              <div style="font-size: 3.5rem; font-weight: 400; color: #1E1E1E; line-height: 0.9; margin: 0;">
-                ${day}
+              <div style="display: flex; align-items: center; justify-content: flex-start; font-size: 3.5rem; font-weight: 400; color: #1E1E1E; gap: 8px; line-height: 0.9; margin: 0; height: 64px; width: 300px;">
+               <p style="line-height: 30px;">#${String(user.id).padStart(
+                 3,
+                 "0"
+               )}</p>
+               <div style="display: flex; flex-direction: column; align-content: center; font-size: 1rem;">
+                  <img src="https://avatars.githubusercontent.com/u/46976866?v=4" alt="Sponsor ChermDev Logo Github" width="52" height="52" style="border-radius: 50%; margin-left: 6px;" />
+                  <p>chermdev</p>
+                </div>
+               <div style="display: flex; flex-direction: column;  align-content: center; font-size: 1rem;">
+                  <img src="https://avatars.githubusercontent.com/u/128504393?s=200&v=4" alt="Sponsor Afordin Logo" width="52" height="52" style="border-radius: 50%;" />
+                  <p style="margin-left: 4px;">afordin</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div style="position: absolute; width: 1px; height: 175px; background-color: #1E1E1E; left: 430px; top: 75px; display: flex"></div>
+         
 
           <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
             <div style="position: absolute; top: -10px; width: 40px; height: 40px; background-image: ${starBackground}; background-size: contain; display: flex;"></div>

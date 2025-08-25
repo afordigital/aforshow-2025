@@ -1,5 +1,5 @@
 ---
-import '@styles/countdown.css';
+import "@styles/countdown.css";
 
 interface Props {
   class?: string;
@@ -49,7 +49,7 @@ const units: Unit[] = [
   type UnitKey = "day" | "hour" | "minute" | "second";
   type CountdownValues = Record<UnitKey, number>;
 
-  const COUNTDOWN_FROM = new Date("2025-09-01T00:00:00").getTime();
+  const COUNTDOWN_FROM = new Date("2025-10-03T20:00:00").getTime();
   const TIME_UNITS = {
     SECOND: 1000,
     MINUTE: 60000,
@@ -64,14 +64,18 @@ const units: Unit[] = [
   function processNumbers(
     $numbers: NodeListOf<HTMLElement>,
     values: CountdownValues,
-    opts?: { setTransition?: boolean; updateText?: boolean; clearTransition?: boolean }
+    opts?: {
+      setTransition?: boolean;
+      updateText?: boolean;
+      clearTransition?: boolean;
+    }
   ): void {
     $numbers.forEach((el) => {
       const unit = el.dataset.unit ?? "";
       const newValue = getUnitValue(unit, values);
 
       if (opts?.setTransition) {
-        el.style.viewTransitionName = (el.textContent === newValue) ? "none" : "";
+        el.style.viewTransitionName = el.textContent === newValue ? "none" : "";
       }
       if (opts?.updateText && el.textContent !== newValue) {
         el.textContent = newValue;
@@ -91,18 +95,24 @@ const units: Unit[] = [
       second: Math.floor((distance % TIME_UNITS.MINUTE) / TIME_UNITS.SECOND),
     };
 
-    const $numbers = document.querySelectorAll<HTMLElement>(".countdown-number");
+    const $numbers =
+      document.querySelectorAll<HTMLElement>(".countdown-number");
 
     if (document.startViewTransition) {
       processNumbers($numbers, values, { setTransition: true });
 
-      document.startViewTransition(() => {
-        processNumbers($numbers, values, { updateText: true });
-      }).finished.then(() => {
-        processNumbers($numbers, values, { clearTransition: true });
-      });
+      document
+        .startViewTransition(() => {
+          processNumbers($numbers, values, { updateText: true });
+        })
+        .finished.then(() => {
+          processNumbers($numbers, values, { clearTransition: true });
+        });
     } else {
-      processNumbers($numbers, values, { updateText: true, clearTransition: true });
+      processNumbers($numbers, values, {
+        updateText: true,
+        clearTransition: true,
+      });
     }
   }
 
