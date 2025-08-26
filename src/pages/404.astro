@@ -1,0 +1,17 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  <Navbar />
+  <main
+    class="w-full max-w-4xl mx-auto text-cs-black min-h-screen gap-28 lg:mt-28 mb-6 flex flex-col items-center px-4"
+  >
+    <h1 class="text-4xl font-bold">404 - Página no encontrada</h1>
+    <p class="text-lg">Lo sentimos, la página que estás buscando no existe.</p>
+    <a href="/" class="text-blue-500 hover:underline">Volver a Inicio</a>
+  </main>
+  <Footer />
+</Layout>

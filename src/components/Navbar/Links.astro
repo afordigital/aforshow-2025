@@ -5,19 +5,19 @@ const links = [
     label: "Inicio",
   },
   {
-    href: "#info",
+    href: "/#info",
     label: "Info",
   },
   {
-    href: "#speakers",
+    href: "/#speakers",
     label: "Charlas",
   },
   {
-    href: "#ticket",
+    href: "/#ticket",
     label: "Ticket",
   },
   {
-    href: "#faq",
+    href: "/#faq",
     label: "FAQ",
   },
 ];
@@ -58,10 +58,10 @@ const { class: classname, childClass, ...props } = Astro.props as Props;
       const onHome = window.location.pathname === "/";
       anchors.forEach((anchor) => {
         const href = anchor.getAttribute("href") || "";
+        const [base, section] = href.split("#");
         const isHomeLink = href === "/" || href === "/#";
-        const isActive = hash
-          ? href === hash || (hash === "#" && href === "/#")
-          : onHome && isHomeLink;
+        
+        const isActive = hash ? href === `/${hash}` : onHome && isHomeLink;
         activeClasses.forEach((cls) => anchor.classList.toggle(cls, isActive));
         anchor.setAttribute("aria-current", isActive ? "page" : "false");
       });
