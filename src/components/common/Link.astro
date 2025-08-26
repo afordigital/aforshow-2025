@@ -3,15 +3,16 @@ type Props = {
   variant: "primary" | "secondary";
   href: string;
   icon?: string;
+  target?:"_blank" | "_self" ;
 };
 
-const { variant, href } = Astro.props;
+const { variant, href, target="_blank" } = Astro.props;
 ---
 
 <a
   href={href}
-  target="_blank"
-  rel="noopener noreferrer"
+  target={target}
+  rel={target=== "_blank" ? "noopener noreferrer" : undefined}
   class={`py-2 rounded-md text-base font-medium ${variant === "primary" ? "bg-gradient-to-b from-cs-primary to-cs-secondary text-white px-5 hover:bg-gradient-to-b hover:from-cs-primary-hover hover:to-cs-secondary-hover" : "relative after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:left-0 hover:after:w-full"}`}
   ><slot /></a
 >

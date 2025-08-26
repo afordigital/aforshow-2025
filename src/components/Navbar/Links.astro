@@ -27,7 +27,7 @@ interface Props {
   childClass?: string;
 }
 
-const { class: classname, childClass, ...props } = Astro.props as Props;
+const { class: classname, childClass, ...props } = Astro.props;
 ---
 
 <nav class={classname} {...props} data-links>
@@ -52,22 +52,43 @@ const { class: classname, childClass, ...props } = Astro.props as Props;
   if (nav) {
     const anchors = Array.from(nav.querySelectorAll("a[href]"));
     const activeClasses = ["after:w-full"];
+    const validHashes = ["", "info", "speakers", "ticket", "faq"];
 
     function updateActiveLink() {
-      const hash = window.location.hash;
-      const onHome = window.location.pathname === "/";
+      const hash = window.location.hash.replace('#', '');
+      const pathname = window.location.pathname;
+      const onHome = pathname === "/" || pathname === "/index.html";
+      
+      if (onHome && hash && !validHashes.includes(hash)) {
+        window.location.href = '/404';
+        return;
+      }
+      
       anchors.forEach((anchor) => {
         const href = anchor.getAttribute("href") || "";
-        const [base, section] = href.split("#");
-        const isHomeLink = href === "/" || href === "/#";
+        const isHomeLink = href === "/#" || href === "/";
         
-        const isActive = hash ? href === `/${hash}` : onHome && isHomeLink;
-        activeClasses.forEach((cls) => anchor.classList.toggle(cls, isActive));
-        anchor.setAttribute("aria-current", isActive ? "page" : "false");
+        if (onHome && href.startsWith("/#")) {
+          const sectionId = href.substring(2);
+          const isActive = hash === sectionId || (hash === "" && isHomeLink);
+          
+          activeClasses.forEach((cls) => anchor.classList.toggle(cls, isActive));
+          anchor.setAttribute("aria-current", isActive ? "page" : "false");
+        } 
+        else if (isHomeLink) {
+          const isActive = onHome && hash === "";
+          activeClasses.forEach((cls) => anchor.classList.toggle(cls, isActive));
+          anchor.setAttribute("aria-current", isActive ? "page" : "false");
+        }
+        else {
+          activeClasses.forEach((cls) => anchor.classList.remove(cls));
+          anchor.setAttribute("aria-current", "false");
+        }
       });
     }
 
     updateActiveLink();
     window.addEventListener("hashchange", updateActiveLink);
+    window.addEventListener("load", updateActiveLink);
   }
 </script>

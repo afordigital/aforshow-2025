@@ -2,16 +2,28 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import Link from "@/components/common/Link.astro";
 ---
 
 <Layout>
   <Navbar />
   <main
-    class="w-full max-w-4xl mx-auto text-cs-black min-h-screen gap-28 lg:mt-28 mb-6 flex flex-col items-center px-4"
+    class="w-full max-w-4xl mx-auto text-cs-black min-h-screen gap-4 lg:mt-2 mb-6 flex flex-col items-center px-4"
   >
-    <h1 class="text-4xl font-bold">404 - Página no encontrada</h1>
+    <h1 class="text-4xl font-extrabold text-center">404 - Página no encontrada</h1>
+    <img
+      src="/svgs/404.svg"
+      alt="Página no encontrada"
+      class=" h-auto mb-4"
+    />
     <p class="text-lg">Lo sentimos, la página que estás buscando no existe.</p>
-    <a href="/" class="text-blue-500 hover:underline">Volver a Inicio</a>
+    <Link href="/" variant="primary" target="_self">Volver a Inicio</Link>
+    <Footer />
   </main>
-  <Footer />
 </Layout>
+<script>
+  if (window.history.replaceState) {
+    const urlWithoutHash = window.location.pathname + window.location.search;
+    window.history.replaceState(null, '', urlWithoutHash);
+  }
+</script>
